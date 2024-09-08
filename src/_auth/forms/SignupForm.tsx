@@ -1,3 +1,4 @@
+import Loader from "@/components/shared/Loader";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const SignupForm = () => {
-  const isLoading = true;
+  const isLoading = false;
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof SignupValidationSchema>>({
@@ -44,8 +45,8 @@ const SignupForm = () => {
           Create a new account
         </h2>
         <p className="text-light-3 small-medium md:base-regular mt-2">
-          To use <span className="text-red text-lg">ErrorBook</span> enter your
-          details
+          To use <span className="text-red text-lg">ErrorBook,</span> Plase
+          enter your details
         </p>
 
         <form
@@ -114,7 +115,9 @@ const SignupForm = () => {
 
           <Button type="submit" className="shad-button_primary">
             {isLoading ? (
-              <div className="flex-center gap-2">Loading...</div>
+              <div className="flex-center gap-2">
+                <Loader /> Loading...
+              </div>
             ) : (
               "Sign up"
             )}
