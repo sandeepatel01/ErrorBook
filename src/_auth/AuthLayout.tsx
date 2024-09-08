@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
   const isAuthenticated = false;
@@ -9,9 +9,15 @@ const AuthLayout = () => {
         <Navigate to="/" />
       ) : (
         <>
-          <section>
+          <section className="flex  flex-col justify-center items-center flex-1 py-10">
             <Outlet />
           </section>
+
+          <img
+            src="/assets/images/side-img.png"
+            alt="sideImage"
+            className="hidden xl:block h-screen w-1/2 object-cover bg-no-repeat"
+          />
         </>
       )}
     </>
