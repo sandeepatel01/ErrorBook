@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { SignupValidationSchema } from "@/lib/validation";
+import Service from "@/lib/appwrite/auth.api";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -32,9 +33,9 @@ const SignupForm = () => {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SignupValidationSchema>) {
-    // const newUser = await createUserAccount(values);
+    const newUser = await Service.createUserAccount(values);
 
-    console.log(values);
+    console.log("New USer: ", newUser);
   }
 
   return (
