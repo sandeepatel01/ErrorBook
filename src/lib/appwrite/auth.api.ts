@@ -1,4 +1,4 @@
-import { Client, Account, ID, Avatars, Databases } from "appwrite";
+import { Client, Account, ID, Avatars, Databases, Query } from "appwrite";
 import config from "../../config/config";
 import { INewUser } from "@/types";
 
@@ -64,6 +64,38 @@ export class Service {
       return newUser;
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  async signInAccount(user: { email: string; password: string }) {
+    try {
+      const session = await this.account.createSession(
+        user.email,
+        user.password
+      );
+      return session;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getCurrentUser() {
+    try {
+      const currentAccount = await this.account.get();
+
+      if (!currentAccount) throw Error;
+
+      const currentUser = await this.databases.listDocuments(
+        config.appwriteDatabaseId,
+        config.appwriteUsersCollectionId,
+        [Query.equal("accountId", currentAccount.$id)]
+      );
+      if (!currentUser) throw Error;
+
+      return currentUser.documents[0];
+    } catch (error) {
+      console.log(error);
+      return null;
     }
   }
 }
