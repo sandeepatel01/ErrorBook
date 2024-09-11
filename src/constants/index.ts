@@ -44,7 +44,7 @@ export const bottombarLinks = [
   },
   {
     imgURL: "/assets/icons/gallery-add.svg",
-    route: "/create-post",
+    route: "/create-error-post",
     label: "Create",
   },
 ];

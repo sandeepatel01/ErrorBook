@@ -17,6 +17,7 @@ import {
 import RootLayout from "./_root/RootLayout";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import LikeErrorPosts from "./_root/pages/LikeErrorPosts";
 
 const App = () => {
   return (
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/saved" element={<Saved />} />
           <Route path="/update-profile/:id" element={<UpdateProfile />} />
+          <Route path="/like-error-post/:id" element={<LikeErrorPosts />} />
         </Route>
       </Routes>
 
