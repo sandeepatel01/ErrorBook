@@ -1,5 +1,13 @@
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+
 import Loader from "@/components/shared/Loader";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -8,31 +16,19 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { SignupValidationSchema } from "@/lib/validation";
-// import Service from "@/lib/appwrite/auth.api";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Link, useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { SignupValidationSchema } from "@/lib/validation";
 import {
   useCreateUserAccount,
   useSignInAccount,
 } from "@/lib/react-query/queriesAndMutations";
+
 import { useUserContext } from "@/context/AuthContext";
 
 const SignupForm = () => {
   const { toast } = useToast();
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
   const navigate = useNavigate();
-
-  // Queries
-  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } =
-    useCreateUserAccount();
-  const { mutateAsync: signInAccount, isPending: isSigningInUser } =
-    useSignInAccount();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof SignupValidationSchema>>({
@@ -45,15 +41,19 @@ const SignupForm = () => {
     },
   });
 
+  // Queries
+  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } =
+    useCreateUserAccount();
+  const { mutateAsync: signInAccount, isPending: isSigningInUser } =
+    useSignInAccount();
+
   // 2. Define a submit handler.
   const handleSignup = async (user: z.infer<typeof SignupValidationSchema>) => {
     try {
       const newUser = await createUserAccount(user);
 
       if (!newUser) {
-        toast({ title: "Sign up failed. Please try again." });
-
-        return;
+        return toast({ title: "Sign up failed. Please try again." });
       }
 
       const session = await signInAccount({
@@ -62,11 +62,11 @@ const SignupForm = () => {
       });
 
       if (!session) {
-        toast({ title: "Something went wrong. Please login your new account" });
+        return toast({
+          title: "Something went wrong. Please login your new account",
+        });
 
         navigate("/sign-in");
-
-        return;
       }
 
       const isLoggedIn = await checkAuthUser();
@@ -76,9 +76,7 @@ const SignupForm = () => {
 
         navigate("/");
       } else {
-        toast({ title: "Login failed. Please try again." });
-
-        return;
+        return toast({ title: "Login failed. Please try again." });
       }
     } catch (error) {
       console.log({ error });

@@ -1,7 +1,8 @@
 import { IUser } from "@/types";
-import { useState, useEffect, createContext, useContext } from "react";
-import service from "@/lib/appwrite/auth.api";
+import React, { useState, useEffect, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { getCurrentUser } from "@/lib/appwrite/api";
 
 export const INITIAL_USER = {
   id: "",
@@ -32,7 +33,7 @@ type IContextType = {
 
 const AuthContext = createContext<IContextType>(INITIAL_STATE);
 
-const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<IUser>(INITIAL_USER);
   const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -42,7 +43,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const checkAuthUser = async () => {
     setIsLoading(true);
     try {
-      const currentAccount = await service.getCurrentUser();
+      const currentAccount = await getCurrentUser();
 
       if (currentAccount) {
         setUser({
@@ -89,8 +90,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+}
 
-export default AuthProvider;
+// export default AuthProvider;
 
 export const useUserContext = () => useContext(AuthContext);

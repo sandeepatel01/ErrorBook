@@ -1,5 +1,10 @@
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 import Loader from "@/components/shared/Loader";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -8,16 +13,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+
 import { SigninValidationSchema } from "@/lib/validation";
-// import Service from "@/lib/appwrite/auth.api";
+import { useSignInAccount } from "@/lib/react-query/queriesAndMutations";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { useSignInAccount } from "@/lib/react-query/queriesAndMutations";
+
 import { useUserContext } from "@/context/AuthContext";
 
 const SigninForm = () => {
@@ -43,21 +45,19 @@ const SigninForm = () => {
     const session = await signInAccount(user);
 
     if (!session) {
-      toast({ title: "Login failed. Please try again." });
-
-      return;
+      return toast({ title: "Login failed. Please try again." });
     }
 
     const isLoggedIn = await checkAuthUser();
+
+    // console.log(isLoggedIn);
 
     if (isLoggedIn) {
       form.reset();
 
       navigate("/");
     } else {
-      toast({ title: "Login failed. Please try again." });
-
-      return;
+      return toast({ title: "Login failed. Please try again." });
     }
   };
 

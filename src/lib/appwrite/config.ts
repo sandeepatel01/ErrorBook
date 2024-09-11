@@ -1,22 +1,22 @@
 import { Client, Account, Databases, Storage, Avatars } from "appwrite";
 import config from "../../config/config";
 
-class Service {
-  client = new Client();
-  databases = new Databases(this.client);
-  storage = new Storage(this.client);
-  account;
-  avatars = new Avatars(this.client);
+export const appwriteConfig = {
+  url: config.appwriteUrl,
+  projectId: config.appwriteProjectId,
+  storageId: config.appwriteBucketId,
+  databaseId: config.appwriteDatabaseId,
+  savesCollectionId: config.appwriteSavesCollectionId,
+  usersCollectionId: config.appwriteUsersCollectionId,
+  errorPostsCollectionId: config.appwriteErrorPostsCollectionId,
+};
 
-  constructor() {
-    this.client
-      .setEndpoint(config.appwriteUrl)
-      .setProject(config.appwriteProjectId);
+export const client = new Client();
 
-    this.account = new Account(this.client);
-  }
-}
+client.setEndpoint(appwriteConfig.url);
+client.setProject(appwriteConfig.projectId);
 
-const service = new Service();
-
-export default service;
+export const account = new Account(client);
+export const databases = new Databases(client);
+export const storage = new Storage(client);
+export const avatars = new Avatars(client);

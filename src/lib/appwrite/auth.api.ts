@@ -2,6 +2,8 @@ import { Client, Account, ID, Avatars, Databases, Query } from "appwrite";
 import config from "../../config/config";
 import { INewUser } from "@/types";
 
+// import { AppwriteException } from "appwrite";
+
 export class Service {
   client = new Client();
   account;
@@ -79,9 +81,19 @@ export class Service {
     }
   }
 
-  async getCurrentUser() {
+  async getAccount() {
     try {
       const currentAccount = await this.account.get();
+
+      return currentAccount;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getCurrentUser() {
+    try {
+      const currentAccount = await this.getAccount();
 
       if (!currentAccount) throw Error;
 
