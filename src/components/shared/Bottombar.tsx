@@ -15,16 +15,14 @@ export const Bottombar = () => {
             key={link.label}
             className={` ${
               isActive && "bg-primary-500 rounded-[10px]"
-            } flex-center flex-col gap-1 p-1.5 transition group-hover:invert-white`}
+            } flex-center flex-col gap-1 p-1.5 transition `}
           >
             <img
               src={link.imgURL}
               alt={link.label}
               width={16}
               height={16}
-              className={`group-hover:invert-white ${
-                isActive && "invert-white"
-              }`}
+              className={` ${isActive && "invert-white"}`}
             />
 
             <p className="tiny-medium text-light-2">{link.label}</p>

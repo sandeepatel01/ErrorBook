@@ -40,8 +40,8 @@ const ErrorPostForm = ({ errorPost }: PostFormProps) => {
     },
   });
 
-  // const { mutateAsync: createErrorPost, isPending: isLoadingCreate } =
-  //   useCreateErrorPost();
+  const { mutateAsync: createErrorPost, isPending: isLoadingCreate } =
+    useCreateErrorPost();
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof PostValidationSchema>) {
