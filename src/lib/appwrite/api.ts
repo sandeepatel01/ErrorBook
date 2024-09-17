@@ -130,12 +130,7 @@ export async function createErrorPost(errorPost: INewPost) {
       appwriteConfig.errorPostsCollectionId,
       ID.unique(),
       {
-        developer: errorPost.userId,
-        caption: errorPost.caption,
-        imageUrl: fileUrl,
-        imageId: uploadedFile.$id,
-        location: errorPost.location,
-        tags: tags,
+  //  TODO: Some Confusion
       }
     );
 
