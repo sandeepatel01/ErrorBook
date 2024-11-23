@@ -28,6 +28,7 @@ export default function Home() {
     <div>
       <UserButton />
     </div>
+
     // <header>
     //   <UserButton>
     //     {/* You can pass the content as a component */}
