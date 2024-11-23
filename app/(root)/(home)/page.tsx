@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import { UserButton } from "@clerk/nextjs";
 
@@ -25,9 +25,7 @@ import { UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   return (
-    <div>
-      <UserButton />
-    </div>
+    <div>Home</div>
 
     // <header>
     //   <UserButton>

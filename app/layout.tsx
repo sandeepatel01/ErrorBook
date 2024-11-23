@@ -1,10 +1,4 @@
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { Inter, Space_Grotesk } from "next/font/google";
 import type { Metadata } from "next";
@@ -46,17 +40,18 @@ export default function RootLayout({
             },
           }}
         >
-          <ThemeProvider>
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-            {children}
-          </ThemeProvider>
+          <ThemeProvider>{children}</ThemeProvider>
         </ClerkProvider>
       </body>
     </html>
   );
+}
+
+{
+  /* <SignedOut>
+<SignInButton />
+</SignedOut>
+<SignedIn>
+<UserButton />
+</SignedIn> */
 }
