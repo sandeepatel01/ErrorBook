@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   description:
     "A community for developers to asking and answering questions, and collaborate with developers from around the world.",
   icons: {
-    icon: "/assets/images/icon.jpg",
+    icon: "/assets/images/favicon.ico",
   },
 };
 
