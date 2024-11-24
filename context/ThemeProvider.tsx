@@ -18,18 +18,25 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     return "light";
   });
 
-  useEffect(() => {
-    // Update the document class and store the mode in localStorage
-    if (mode === "dark") {
+  const handleThemeChange = () => {
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      setMode("dark");
       document.documentElement.classList.add("dark");
-      document.documentElement.classList.remove("light");
     } else {
-      document.documentElement.classList.add("light");
+      setMode("light");
       document.documentElement.classList.remove("dark");
     }
+  };
 
-    localStorage.setItem("theme", mode);
+  useEffect(() => {
+    handleThemeChange();
   }, [mode]);
+
+  console.log("Mode: ", mode);
 
   return (
     <ThemeContext.Provider value={{ mode, setMode }}>
