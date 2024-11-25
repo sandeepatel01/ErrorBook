@@ -48,7 +48,7 @@ body {
   }
 
   .no-focus {
-    @apply focus-visible:ring-0 focus-visible:ring-transparent focus;
+    @apply focus-visible:ring-0 focus-visible:ring-transparent focus:outline-none;
   }
   .active-theme {
     filter: invert(53%) sepia(98%) saturate(3332%) hue-rotate(0deg)

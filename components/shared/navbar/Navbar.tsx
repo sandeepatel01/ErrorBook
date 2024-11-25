@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import Theme from "./Theme";
 import MobileNav from "./MobileNav";
+import GlobalSearch from "../search/GlobalSearch";
 
 const Navbar = () => {
   return (
@@ -22,7 +23,7 @@ const Navbar = () => {
           <span className="text-[#ff0033] font-extrabold">ErrorBook</span>
         </p>
       </Link>
-      GlobleSearch
+      <GlobalSearch />
       <div className="flex-between gap-5">
         <Theme />
         <SignedIn>
