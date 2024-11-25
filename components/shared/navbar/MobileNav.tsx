@@ -18,7 +18,7 @@ const NavContent = () => {
   const pathname = usePathname();
 
   return (
-    <section className="flex flex-col h-full gap-6 pt-16">
+    <section className="flex h-full flex-col gap-6 pt-16">
       {sidebarLinks.map((item) => {
         const isActive =
           (pathname.includes(item.route) && item.route.length > 1) ||
@@ -65,7 +65,7 @@ const MobileNav = () => {
       </SheetTrigger>
       <SheetContent
         side="left"
-        className="bg-light-900 dark:bg-dark-200 border-none"
+        className="border-none bg-light-900 dark:bg-dark-200"
       >
         <Link href="/" className="flex items-center gap-1">
           {/* <Image
@@ -74,8 +74,8 @@ const MobileNav = () => {
             height={23}
             alt="ErrorBook"
           /> */}
-          <p className="h2-bold text-dark100_light900 ">
-            <span className="text-[#ff0033] font-extrabold">ErrorBook</span>
+          <p className="h2-bold text-dark100_light900">
+            <span className="font-extrabold text-[#ff0033]">ErrorBook</span>
           </p>
         </Link>
         <div>
@@ -87,21 +87,14 @@ const MobileNav = () => {
             <div className="flex flex-col gap-3">
               <SheetClose asChild>
                 <Link href="/sign-in">
-                  <Button
-                    className="small-medium btn-secondary
-                   min-h-[41px] w-full rounded-xl px-4 py-3 shadow-none"
-                  >
+                  <Button className="small-medium btn-secondary min-h-[41px] w-full rounded-xl px-4 py-3 shadow-none">
                     <span className="primary-text-gradient">Log In</span>
                   </Button>
                 </Link>
               </SheetClose>
               <SheetClose asChild>
                 <Link href="/sign-up">
-                  <Button
-                    className="small-medium light-border-2 btn-tertiary
-                   min-h-[41px] w-full rounded-xl px-4 py-3 shadow
-                   text-dark400_light900"
-                  >
+                  <Button className="small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-xl px-4 py-3 shadow">
                     Sign Up
                   </Button>
                 </Link>
