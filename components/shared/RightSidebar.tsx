@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { title } from "process";
 import React from "react";
 import RenderTags from "./RenderTags";
 
@@ -66,8 +65,8 @@ const RightSidebar = () => {
         <div className="mt-7 flex flex-col gap-[30px]">
           {topQuestions.map((question) => (
             <Link
-              href={`/questions/${question.id}`}
-              key={question.id}
+              href={`/questions/${question._id}`}
+              key={question._id}
               className="flex cursor-pointer items-center justify-between gap-7"
             >
               <p className="body-medium text-dark500_light700">

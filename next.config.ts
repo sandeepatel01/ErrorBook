@@ -5,9 +5,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
-module.exports = {
-  experimental: {
-    runtime: false, // Disables the error overlay
-  },
-};
