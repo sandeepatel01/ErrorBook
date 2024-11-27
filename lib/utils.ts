@@ -38,3 +38,13 @@ export const getTimestamp = (createdAt: Date): string => {
   const differenceInYears = Math.floor(differenceInMonths / 12);
   return `${differenceInYears} year${differenceInYears > 1 ? "s" : ""} ago`;
 };
+
+export function formatNumber(num: number): string {
+  if (num >= 1_000_000) {
+    return (num / 1_000_000).toFixed(1) + "M";
+  } else if (num >= 1_000) {
+    return (num / 1_000).toFixed(1) + "K";
+  } else {
+    return num.toString();
+  }
+}

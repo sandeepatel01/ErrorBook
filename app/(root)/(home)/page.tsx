@@ -46,8 +46,8 @@ const questions = [
         picture: "https://example.com/jane-smith.jpg",
       },
     ],
-    views: 200,
-    upvotes: 15,
+    views: 1500000,
+    upvotes: 75000,
     answers: [
       { text: "Learn the fundamentals and practice coding every day." },
       { text: "Join a coding bootcamp or enroll in online courses." },
