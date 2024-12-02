@@ -26,10 +26,10 @@ const userSchema = new Schema<IUser>({
   location: { type: String },
   portfolioWebsite: { type: String, default: "" },
   reputation: { type: Number, default: 0 },
-  saved: [{ type: Schema.Types.ObjectId, ref: "QuestionModel" }],
+  saved: [{ type: Schema.Types.ObjectId, ref: "Question" }],
   joinedAt: { type: Date, default: Date.now },
 });
 
-const UserModel = models.User || model<IUser>("User", userSchema);
+const User = models.User || model<IUser>("User", userSchema);
 
-export default UserModel;
+export default User;

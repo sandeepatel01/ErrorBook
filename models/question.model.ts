@@ -1,4 +1,4 @@
-import { Schema, model, Document, models } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface IQuestion extends Document {
   title: string;
@@ -12,7 +12,7 @@ export interface IQuestion extends Document {
   createdAt: Date;
 }
 
-const questionSchema = new Schema<IQuestion>({
+const questionSchema: Schema<IQuestion> = new Schema({
   title: {
     type: String,
     required: true,
@@ -60,6 +60,8 @@ const questionSchema = new Schema<IQuestion>({
   },
 });
 
-const QuestionModel = models.Question || model("Question", questionSchema);
+const Question =
+  (mongoose.models.Question as mongoose.Model<IQuestion>) ||
+  mongoose.model<IQuestion>("Question", questionSchema);
 
-export default QuestionModel;
+export default Question;
