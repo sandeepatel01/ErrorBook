@@ -3,8 +3,33 @@
 import Question from "@/models/question.model";
 import { connectToDatabase } from "../dbConnect";
 import Tag from "@/models/tag.model";
+import { CreateQuestionParams, GetQuestionsParams } from "./shared.types";
+import User from "@/models/user.model";
+import { revalidatePath } from "next/cache";
 
-export async function createQuestion(params: any) {
+export async function getQuestions(params: GetQuestionsParams) {
+  await connectToDatabase();
+
+  try {
+    const questions = await Question.find({})
+      .populate({
+        path: "tags",
+        model: Tag,
+      })
+      .populate({
+        path: "author",
+        model: User,
+      })
+      .sort({ createdAt: -1 });
+
+    return { questions };
+  } catch (error) {
+    console.log("Error in getting questions:", error);
+    throw error;
+  }
+}
+
+export async function createQuestion(params: CreateQuestionParams) {
   await connectToDatabase();
   try {
     const { title, content, tags, author, path } = params;
@@ -33,6 +58,8 @@ export async function createQuestion(params: any) {
 
     // TODO: Create an interaction record for the user's ask_question action
     // TODO: Increment author 's reputation by +5 for creating a question
+
+    revalidatePath(path);
   } catch (error) {
     console.log("Error in creating question:", error);
   }

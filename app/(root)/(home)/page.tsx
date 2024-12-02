@@ -6,57 +6,12 @@ import { HomePageFilters } from "@/constants/filters";
 import HomeFilters from "@/components/home/HomeFilters";
 import NoResult from "@/components/shared/NoResult";
 import QuestionCard from "@/components/cards/QuestionCard";
+import { getQuestions } from "@/lib/actions/question.action";
 
-const questions = [
-  {
-    _id: "1",
-    title: "What is the best way to learn web development?",
-    tags: [
-      { _id: "1", name: "HTML" },
-      { _id: "2", name: "CSS" },
-      { _id: "3", name: "JavaScript" },
-    ],
-    author: [
-      {
-        _id: "1",
-        name: "John Doe",
-        picture: "https://example.com/john-doe.jpg",
-      },
-    ],
-    views: 100,
-    upvotes: 10,
-    answers: [
-      { text: "Start with the basics and build projects." },
-      { text: "Use online resources like FreeCodeCamp and MDN." },
-    ],
-    createdAt: new Date("2022-01-01T12:00:00.000Z"),
-  },
-  {
-    _id: "2",
-    title: "How to become a web developer?",
-    tags: [
-      { _id: "4", name: "HTML" },
-      { _id: "5", name: "CSS" },
-      { _id: "6", name: "JavaScript" },
-    ],
-    author: [
-      {
-        _id: "2",
-        name: "Jane Smith",
-        picture: "https://example.com/jane-smith.jpg",
-      },
-    ],
-    views: 1500000,
-    upvotes: 75000,
-    answers: [
-      { text: "Learn the fundamentals and practice coding every day." },
-      { text: "Join a coding bootcamp or enroll in online courses." },
-    ],
-    createdAt: new Date("2023-01-01T12:00:00.000Z"),
-  },
-];
+export default async function Home() {
+  const result = await getQuestions({});
+  console.log(result);
 
-export default function Home() {
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -86,16 +41,25 @@ export default function Home() {
       <HomeFilters />
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.length > 0 ? (
-          questions.map((question) => (
+        {result.questions.length > 0 ? (
+          result.questions.map((question) => (
             <QuestionCard
-              key={question._id}
-              _id={question._id}
+              key={question._id as string}
+              _id={question._id as string}
               title={question.title}
-              tags={question.tags}
-              author={question.author}
+              tags={question.tags.map((tag) => ({
+                _id: tag.toString(),
+                name: tag.name,
+              }))}
+              author={[
+                {
+                  _id: question.author.toString(),
+                  name: question.author.name,
+                  picture: question.author.picture,
+                },
+              ]}
               views={question.views}
-              upvotes={question.upvotes}
+              upvotes={question.upvotes.length}
               answers={question.answers}
               createdAt={question.createdAt.toISOString()}
             />
