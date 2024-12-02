@@ -38,7 +38,7 @@ const Filter = ({ filters, otherClasses, containerClasses }: FilterProps) => {
             ))}
           </SelectGroup>
         </SelectContent>
-      </Select>{" "}
+      </Select>
     </div>
   );
 };
