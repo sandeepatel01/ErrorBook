@@ -18,7 +18,7 @@ interface QuestionCardProps {
   };
   views: number;
   upvotes: number;
-  answers: Array<object>;
+  answers: object[];
   createdAt: string;
 }
 
