@@ -44,20 +44,11 @@ export default async function Home() {
         {result.questions.length > 0 ? (
           result.questions.map((question) => (
             <QuestionCard
-              key={question._id as string}
-              _id={question._id as string}
+              key={question._id}
+              _id={question._id}
               title={question.title}
-              tags={question.tags.map((tag) => ({
-                _id: tag.toString(),
-                name: "tag",
-              }))}
-              author={[
-                {
-                  _id: question.author.toString(),
-                  name: question.author.toString(),
-                  picture: question.author.toString(),
-                },
-              ]}
+              tags={question.tags}
+              author={question.author}
               views={question.views}
               upvotes={question.upvotes.length}
               answers={question.answers}

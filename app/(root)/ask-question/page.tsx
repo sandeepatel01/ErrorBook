@@ -1,10 +1,12 @@
 import Question from "@/components/forms/Question";
 import { getUserById } from "@/lib/actions/user.action";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import React from "react";
 
 const page = async () => {
-  const userId = "clerk_12345"; // This should be dynamically fetched, not hardcoded
+  const authResult = await auth();
+  const { userId } = authResult;
 
   if (!userId) {
     redirect("/sign-in");
