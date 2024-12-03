@@ -1,7 +1,25 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
+import { NextRequest } from "next/server";
 
-// Add "/" to the public routes
-const isPublicRoute = createRouteMatcher(["/", "/sign-in(.*)", "/sign-up(.*)"]);
+// Create a custom route matcher
+const isPublicRoute = (request: NextRequest) => {
+  const publicRoutes = [
+    "/",
+    "/question/:id",
+    "/tags",
+    "/tags/:id",
+    "/profile/:id",
+    "/community",
+  ];
+
+  const ignoredRoutes = ["/api/webhooks", "/api/chatgpt"];
+
+  // Check if the route is public or ignored
+  return (
+    publicRoutes.some((route) => request.url.match(new RegExp(`^${route}$`))) ||
+    ignoredRoutes.some((route) => request.url.match(new RegExp(`^${route}$`)))
+  );
+};
 
 export default clerkMiddleware(async (auth, request) => {
   if (!isPublicRoute(request)) {
@@ -10,18 +28,26 @@ export default clerkMiddleware(async (auth, request) => {
 });
 
 export const config = {
-  matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
-    "/(api|trpc)(.*)",
-  ],
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
 
 // import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-// // const isPublicRoute = createRouteMatcher(["/"]);
-// const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);
+// // Add "/" to the public routes
+// const isPublicRoute = createRouteMatcher({
+//   publicRoutes: [
+//     "/",
+//     "/api/webhooks",
+//     "/question/:id",
+//     "/tags",
+//     "/tags/:id",
+//     "/profile/:id",
+//     "/community",
+//     // "/sign-in(.*)",
+//     // "/sign-up(.*)",
+//   ],
+//   ignoredRoutes: ["/api/webhooks", "/api/chatgpt"],
+// });
 
 // export default clerkMiddleware(async (auth, request) => {
 //   if (!isPublicRoute(request)) {
@@ -30,10 +56,10 @@ export const config = {
 // });
 
 // export const config = {
-//   matcher: [
-//     // Skip Next.js internals and all static files, unless found in search params
-//     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-//     // Always run for API routes
-//     "/(api|trpc)(.*)",
-//   ],
+//   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+
+//   // matcher: [
+//   //   "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+//   //   "/(api|trpc)(.*)",
+//   // ],
 // };
