@@ -1,7 +1,17 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
 
-// Create a custom route matcher
+// Utility function to determine if a route matches any pattern
+const isMatchingRoute = (request: NextRequest, routes: string[]) => {
+  return routes.some((route) => {
+    // Convert dynamic route segments (e.g., :id) to regex wildcards
+    const regex = new RegExp(
+      `^${route.replace(/:([a-zA-Z0-9_]+)/g, "[^/]+")}$`,
+    );
+    return regex.test(new URL(request.url).pathname); // Direct use of pathname
+  });
+};
+
 const isPublicRoute = (request: NextRequest) => {
   const publicRoutes = [
     "/",
@@ -14,21 +24,33 @@ const isPublicRoute = (request: NextRequest) => {
 
   const ignoredRoutes = ["/api/webhooks", "/api/chatgpt"];
 
-  // Check if the route is public or ignored
+  // Check if the route is either public or ignored
   return (
-    publicRoutes.some((route) => request.url.match(new RegExp(`^${route}$`))) ||
-    ignoredRoutes.some((route) => request.url.match(new RegExp(`^${route}$`)))
+    isMatchingRoute(request, publicRoutes) ||
+    isMatchingRoute(request, ignoredRoutes)
   );
 };
 
 export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    await auth.protect();
+  try {
+    if (!isPublicRoute(request)) {
+      console.log("Protecting route:", request.url);
+      await auth.protect();
+    } else {
+      console.log("Public route accessed:", request.url);
+    }
+  } catch (error) {
+    console.error("Auth protection error:", error);
+    throw error;
   }
 });
 
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: [
+    "/((?!.*\\..*|_next).*)", // Matches all routes except static files and _next
+    "/",
+    "/(api|trpc)(.*)", // Matches API and TRPC routes
+  ],
 };
 
 // import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
