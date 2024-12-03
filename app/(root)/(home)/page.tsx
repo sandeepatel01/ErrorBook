@@ -49,13 +49,13 @@ export default async function Home() {
               title={question.title}
               tags={question.tags.map((tag) => ({
                 _id: tag.toString(),
-                name: tag.name,
+                name: "tag",
               }))}
               author={[
                 {
                   _id: question.author.toString(),
-                  name: question.author.name,
-                  picture: question.author.picture,
+                  name: question.author.toString(),
+                  picture: question.author.toString(),
                 },
               ]}
               views={question.views}
