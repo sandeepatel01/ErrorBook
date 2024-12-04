@@ -2,7 +2,8 @@
 
 import User from "@/models/user.model";
 import { connectToDatabase } from "../dbConnect";
-import { GetTopInteractedTagsParams } from "./shared.types";
+import { GetAllTagsParams, GetTopInteractedTagsParams } from "./shared.types";
+import Tag from "@/models/tag.model";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   await connectToDatabase();
@@ -22,6 +23,19 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
     ];
   } catch (error) {
     console.log("Error in getting top interacted tags: ", error);
+    throw error;
+  }
+}
+
+export async function getAllTags(params: GetAllTagsParams) {
+  await connectToDatabase();
+
+  try {
+    const tags = await Tag.find({}).sort({ createdAt: -1 });
+
+    return { tags };
+  } catch (error) {
+    console.log("Error in getting all tags: ", error);
     throw error;
   }
 }
