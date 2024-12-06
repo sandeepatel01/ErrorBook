@@ -25,25 +25,25 @@ export async function getQuestions(params: GetQuestionsParams) {
       .sort({ createdAt: -1 });
 
     // Transform data to ensure compliance
-    const transformedQuestions = questions.map((q) => ({
-      _id: q._id.toString(),
-      title: q.title,
-      tags: q.tags.map((tag) => ({
-        _id: tag._id.toString(),
-        name: tag.name,
-      })),
-      author: {
-        _id: q.author?._id.toString() || "",
-        name: q.author?.name || "Unknown",
-        picture: q.author?.picture || "/default-avatar.png",
-      },
-      views: q.views || 0,
-      upvotes: q.upvotes || [],
-      answers: q.answers || [],
-      createdAt: q.createdAt,
-    }));
+    // const transformedQuestions = questions.map((q) => ({
+    //   _id: q._id.toString(),
+    //   title: q.title,
+    //   tags: q.tags.map((tag) => ({
+    //     _id: tag._id.toString(),
+    //     name: tag.name,
+    //   })),
+    //   author: {
+    //     _id: q.author?._id.toString() || "",
+    //     name: q.author?.name || "Unknown",
+    //     picture: q.author?.picture || "/default-avatar.png",
+    //   },
+    //   views: q.views || 0,
+    //   upvotes: q.upvotes || [],
+    //   answers: q.answers || [],
+    //   createdAt: q.createdAt,
+    // }));
 
-    return { questions: transformedQuestions };
+    return { questions};
   } catch (error) {
     console.log("Error in getting questions:", error);
     throw error;
