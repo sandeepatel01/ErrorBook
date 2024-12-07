@@ -33,7 +33,13 @@ export async function getAllTags(params: GetAllTagsParams) {
   try {
     const tags = await Tag.find({}).sort({ createdAt: -1 });
 
-    return { tags };
+    // Serialize _id
+    const serializedTags = tags.map((tag) => ({
+      ...tag.toObject(),
+      _id: tag._id.toString(), // Convert ObjectId to string
+    }));
+
+    return { tags: serializedTags };
   } catch (error) {
     console.log("Error in getting all tags: ", error);
     throw error;

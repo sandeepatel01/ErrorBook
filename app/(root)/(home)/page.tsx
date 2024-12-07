@@ -10,7 +10,8 @@ import { getQuestions } from "@/lib/actions/question.action";
 
 export default async function Home() {
   const result = await getQuestions({});
-  console.log(result);
+  // console.log(result);
+  console.log(result.questions);
 
   return (
     <>
@@ -22,6 +23,7 @@ export default async function Home() {
           </Button>
         </Link>
       </div>
+
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchbar
           route="/"
@@ -50,9 +52,9 @@ export default async function Home() {
               tags={question.tags}
               author={question.author}
               views={question.views}
-              upvotes={question.upvotes.length}
+              upvotes={question.upvotes}
               answers={question.answers}
-              createdAt={question.createdAt.toISOString()}
+              createdAt={question.createdAt}
             />
           ))
         ) : (

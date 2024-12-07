@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const Page = async () => {
   const result = await getAllTags({});
-  // console.log("result", result);
+  console.log("result", result);
 
   return (
     <>
@@ -40,7 +40,8 @@ const Page = async () => {
               <article className="background-light900_dark200 light-border flex w-full flex-col rounded-2xl border p-8 py-10 sm:w-[260px]">
                 <div className="background-light800_dark400 w-fit rounded-xl px-5 py-1.5">
                   <p className="paragraph-semibold text-dark300_light900 capitalize">
-                    {tag.name}
+                    {/* {tag.name} */}
+                    {tag.name || "Unnamed Tag"}
                   </p>
                 </div>
                 <p className="small-medium text-dark400_light500 mt-3.5">

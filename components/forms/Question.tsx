@@ -123,7 +123,7 @@ const Question = ({ mongoUserId }: QuestionProps) => {
               </FormLabel>
               <FormControl className="mt-3.5">
                 <Input
-                  className="no-focus paragraph-regular !important light-border-2 min-h-[56px] rounded-xl border bg-light-900 text-dark-300 dark:border-dark-400 dark:bg-dark-300 dark:text-light-700"
+                  className="no-focus paragraph-regular light-border-2 min-h-[56px] rounded-xl border bg-light-900 text-dark-300 dark:border-dark-400 dark:bg-dark-300 dark:text-light-700"
                   {...field}
                 />
               </FormControl>
@@ -203,7 +203,7 @@ const Question = ({ mongoUserId }: QuestionProps) => {
               <FormControl className="mt-3.5">
                 <>
                   <Input
-                    className="no-focus paragraph-regular !important light-border-2 min-h-[56px] rounded-xl border bg-light-900 text-dark-300 dark:border-dark-400 dark:bg-dark-300 dark:text-light-700"
+                    className="no-focus paragraph-regular light-border-2 min-h-[56px] rounded-xl border bg-light-900 text-dark-300 dark:border-dark-400 dark:bg-dark-300 dark:text-light-700"
                     placeholder="Add tags..."
                     onKeyDown={(event) => handleInputKeyDown(event, field)}
                   />
