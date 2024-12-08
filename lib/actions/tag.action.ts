@@ -38,6 +38,7 @@ export async function getAllTags(params: GetAllTagsParams) {
       ...tag.toObject(),
       _id: tag._id.toString(), // Convert ObjectId to string
     }));
+    console.log("Serialized tags: ", serializedTags);
 
     return { tags: serializedTags };
   } catch (error) {
