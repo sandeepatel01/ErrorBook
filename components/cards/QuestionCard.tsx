@@ -7,15 +7,8 @@ import { formatNumber, getTimestamp } from "@/lib/utils";
 interface QuestionCardProps {
   _id: string;
   title: string;
-  tags: {
-    _id: string;
-    name: string;
-  }[];
-  author: {
-    _id: string;
-    name: string;
-    picture: string;
-  };
+  tags: { _id: string; name: string }[];
+  author: { _id: string; name: string; picture: string };
   views: number;
   upvotes: number;
   answers: object[];
@@ -32,6 +25,17 @@ const QuestionCard = ({
   answers,
   createdAt,
 }: QuestionCardProps) => {
+  console.log("QuestionCard", {
+    _id,
+    title,
+    tags,
+    author,
+    views,
+    upvotes,
+    answers,
+    createdAt,
+  });
+
   return (
     <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">

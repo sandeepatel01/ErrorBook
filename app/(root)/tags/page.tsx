@@ -1,5 +1,6 @@
 import Filter from "@/components/shared/Filter";
 import NoResult from "@/components/shared/NoResult";
+
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { UserFilters } from "@/constants/filters";
 import { getAllTags } from "@/lib/actions/tag.action";
@@ -7,7 +8,7 @@ import Link from "next/link";
 
 const Page = async () => {
   const result = await getAllTags({});
-  console.log("result", result);
+  // console.log("result", result);
 
   return (
     <>

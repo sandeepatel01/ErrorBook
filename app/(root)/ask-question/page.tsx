@@ -23,7 +23,7 @@ const page = async () => {
     return; // Exit the function to prevent further execution
   }
 
-  console.log("Mongo User: ", mongoUser);
+  // console.log("Mongo User: ", mongoUser);
 
   return (
     <div>

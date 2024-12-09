@@ -2,9 +2,9 @@
 
 import Question from "@/models/question.model";
 import { connectToDatabase } from "../dbConnect";
-import Tag from "@/models/tag.model";
+import Tag, { ITag } from "@/models/tag.model";
 import { CreateQuestionParams, GetQuestionsParams } from "./shared.types";
-import User from "@/models/user.model";
+import User, { IUser } from "@/models/user.model";
 import { revalidatePath } from "next/cache";
 
 export async function getQuestions(params: GetQuestionsParams) {
@@ -12,19 +12,39 @@ export async function getQuestions(params: GetQuestionsParams) {
 
   try {
     const questions = await Question.find({})
-      .populate({
+      .populate<{ tags: ITag[]; author: IUser }>({
         path: "tags",
         model: Tag,
         select: "_id name",
       })
-      .populate({
+      .populate<{ tags: ITag[]; author: IUser }>({
         path: "author",
         model: User,
         select: "_id name picture",
       })
+      .lean() // Convert to plain JS objects
       .sort({ createdAt: -1 });
 
-    return { questions };
+    // Transform questions to plain objects
+    const serializedQuestions = questions.map((question) => ({
+      _id: question._id.toString(),
+      title: question.title,
+      tags: question.tags.map((tag) => ({
+        _id: tag._id.toString(), // Directly use the fields from ITag
+        name: tag.name,
+      })),
+      author: {
+        _id: question.author._id.toString(), // Directly use the fields from IUser
+        name: question.author.name,
+        picture: question.author.picture,
+      },
+      views: question.views,
+      upvotes: question.upvotes.length,
+      answers: question.answers,
+      createdAt: question.createdAt.toISOString(),
+    }));
+
+    return { questions: serializedQuestions };
   } catch (error) {
     console.log("Error in getting questions:", error);
     throw error;
