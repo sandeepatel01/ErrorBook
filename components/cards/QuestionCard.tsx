@@ -25,16 +25,16 @@ const QuestionCard = ({
   answers,
   createdAt,
 }: QuestionCardProps) => {
-  console.log("QuestionCard", {
-    _id,
-    title,
-    tags,
-    author,
-    views,
-    upvotes,
-    answers,
-    createdAt,
-  });
+  // console.log("QuestionCard", {
+  //   _id,
+  //   title,
+  //   tags,
+  //   author,
+  //   views,
+  //   upvotes,
+  //   answers,
+  //   createdAt,
+  // });
 
   return (
     <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
