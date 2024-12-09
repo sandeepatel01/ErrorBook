@@ -3,7 +3,11 @@
 import Question from "@/models/question.model";
 import { connectToDatabase } from "../dbConnect";
 import Tag, { ITag } from "@/models/tag.model";
-import { CreateQuestionParams, GetQuestionsParams } from "./shared.types";
+import {
+  CreateQuestionParams,
+  GetQuestionByIdParams,
+  GetQuestionsParams,
+} from "./shared.types";
 import User, { IUser } from "@/models/user.model";
 import { revalidatePath } from "next/cache";
 
@@ -84,5 +88,42 @@ export async function createQuestion(params: CreateQuestionParams) {
     revalidatePath(path);
   } catch (error) {
     console.log("Error in creating question:", error);
+  }
+}
+
+export async function getQuestionById(params: GetQuestionByIdParams) {
+  await connectToDatabase();
+
+  try {
+    const { questionId } = params;
+
+    const question = await Question.findById(questionId)
+      .populate({
+        path: "tags",
+        model: Tag,
+        select: "_id name",
+      })
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id name picture",
+      });
+
+    // .populate<{ tags: ITag[]; author: IUser }>({
+    //   path: "tags",
+    //   model: Tag,
+    //   select: "_id name",
+    // })
+    // .populate<{ tags: ITag[]; author: IUser }>({
+    //   path: "author",
+    //   model: User,
+    //   select: "_id name picture",
+    // })
+    // .lean();
+
+    return question;
+  } catch (error) {
+    console.log("Error in getting question by id:", error);
+    throw error;
   }
 }
