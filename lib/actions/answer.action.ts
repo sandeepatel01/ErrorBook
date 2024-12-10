@@ -1,7 +1,11 @@
 "use server";
 
 import Answer from "@/models/answer.model";
-import { CreateAnswerParams, GetAnswersParams } from "./shared.types";
+import {
+  AnswerVoteParams,
+  CreateAnswerParams,
+  GetAnswersParams,
+} from "./shared.types";
 import { connectToDatabase } from "../dbConnect";
 import Question from "@/models/question.model";
 import { revalidatePath } from "next/cache";
@@ -51,6 +55,76 @@ export async function getAnswers(params: GetAnswersParams) {
     return { answers };
   } catch (error) {
     console.log("Error in getting answers: ", error);
+    throw error;
+  }
+}
+
+export async function upvoteAnswer(params: AnswerVoteParams) {
+  await connectToDatabase();
+
+  try {
+    const { answerId, userId, hasupVoted, hasdownVoted, path } = params;
+
+    let updateQuery = {};
+
+    if (hasupVoted) {
+      updateQuery = { $pull: { upvotes: userId } };
+    } else if (hasdownVoted) {
+      updateQuery = {
+        $pull: { downvotes: userId },
+        $push: { upvotes: userId },
+      };
+    } else {
+      updateQuery = { $addToSet: { upvotes: userId } };
+    }
+
+    const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, {
+      new: true,
+    });
+
+    if (!answer) {
+      throw new Error("Answer not found");
+    }
+
+    // TODO: Increment author 's reputation by +5 for upvoting a question
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log("Error in upvoting answer:", error);
+    throw error;
+  }
+}
+
+export async function downvoteAnswer(params: AnswerVoteParams) {
+  await connectToDatabase();
+
+  try {
+    const { answerId, userId, hasupVoted, hasdownVoted, path } = params;
+
+    let updateQuery = {};
+
+    if (hasdownVoted) {
+      updateQuery = { $pull: { downvote: userId } };
+    } else if (hasupVoted) {
+      updateQuery = {
+        $pull: { upvotes: userId },
+        $push: { downvotes: userId },
+      };
+    } else {
+      updateQuery = { $addToSet: { downvotes: userId } };
+    }
+
+    const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, {
+      new: true,
+    });
+
+    if (!answer) {
+      throw new Error("Answer not found");
+    }
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log("Error in downvoting answer:", error);
     throw error;
   }
 }
