@@ -110,6 +110,19 @@ export async function getQuestionById(params: GetQuestionByIdParams) {
       })
       .lean();
 
+    // Convert MongoDB ObjectId to string for serializability
+    if (question) {
+      question._id = question._id.toString(); // Ensure _id is a string
+      question.author._id = question.author._id.toString(); // Author _id to string
+      question.author.picture = question.author.picture.toString();
+
+      // Serialize tags
+      question.tags = question.tags.map((tag) => ({
+        ...tag,
+        _id: tag._id.toString(), // Convert tag _id to string
+      }));
+    }
+
     return question;
   } catch (error) {
     console.log("Error in getting question by id:", error);

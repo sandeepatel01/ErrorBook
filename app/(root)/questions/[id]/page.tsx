@@ -1,8 +1,8 @@
 import Metrix from "@/components/shared/Metrix";
 import ParseHTML from "@/components/shared/ParseHTML";
+import RenderTags from "@/components/shared/RenderTags";
 import { getQuestionById } from "@/lib/actions/question.action";
 import { formatNumber, getTimestamp } from "@/lib/utils";
-import console from "console";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -17,7 +17,7 @@ const page = async ({ params }: Params) => {
   const resolvedParams = await params;
   const questionId = resolvedParams.id;
 
-  console.log("Resolved Params:", resolvedParams);
+  // console.log("Resolved Params:", resolvedParams);
 
   const result = await getQuestionById({ questionId });
 
@@ -75,7 +75,18 @@ const page = async ({ params }: Params) => {
         />
       </div>
 
-      <ParseHTML />
+      <ParseHTML data={result.content} />
+
+      <div className="mt-8 flex flex-wrap gap-2">
+        {result.tags.map((tag) => (
+          <RenderTags
+            key={tag._id.toString()}
+            _id={tag._id.toString()}
+            name={tag.name}
+            showCount={false}
+          />
+        ))}
+      </div>
     </>
   );
 };
