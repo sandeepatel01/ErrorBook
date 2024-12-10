@@ -1,10 +1,12 @@
 "use server";
 
 import Answer from "@/models/answer.model";
-import { CreateAnswerParams } from "./shared.types";
+import { CreateAnswerParams, GetAnswersParams } from "./shared.types";
 import { connectToDatabase } from "../dbConnect";
 import Question from "@/models/question.model";
 import { revalidatePath } from "next/cache";
+import { IUser } from "@/models/user.model";
+// import mongoose from "mongoose";
 
 export async function createAnswer(params: CreateAnswerParams) {
   await connectToDatabase();
@@ -12,7 +14,7 @@ export async function createAnswer(params: CreateAnswerParams) {
   try {
     const { content, author, question, path } = params;
 
-    const newAnswer = new Answer({
+    const newAnswer = await Answer.create({
       content,
       author,
       question,
@@ -33,3 +35,46 @@ export async function createAnswer(params: CreateAnswerParams) {
     throw error;
   }
 }
+
+export async function getAnswers(params: GetAnswersParams) {
+  await connectToDatabase();
+
+  try {
+    const { questionId } = params;
+
+    const answers = await Answer.find({ question: questionId })
+      .populate<{
+        author: IUser;
+      }>("author", "_id clerkId name picture")
+      .sort({ createdAt: -1 });
+
+    return { answers };
+  } catch (error) {
+    console.log("Error in getting answers: ", error);
+    throw error;
+  }
+}
+
+// export async function getAnswers(params: GetAnswersParams) {
+//   await connectToDatabase();
+
+//   try {
+//     const { questionId } = params;
+//     const cleanQuestionId = questionId.replace(/^"|"$/g, ""); // Removes extra quotes
+
+//     if (!mongoose.isValidObjectId(cleanQuestionId)) {
+//       throw new Error("Invalid question ID");
+//     }
+
+//     const answers = await Answer.find({ question: cleanQuestionId })
+//       .populate<{
+//         author: IUser;
+//       }>("author", "_id clerkId name picture")
+//       .sort({ createdAt: -1 });
+
+//     return { answers };
+//   } catch (error) {
+//     console.log("Error in getting answers: ", error);
+//     throw error;
+//   }
+// }

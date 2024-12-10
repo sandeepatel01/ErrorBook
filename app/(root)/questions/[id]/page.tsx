@@ -1,4 +1,5 @@
 import Answer from "@/components/forms/Answer";
+import AllAnswer from "@/components/shared/AllAnswer";
 import Metrix from "@/components/shared/Metrix";
 import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTags from "@/components/shared/RenderTags";
@@ -96,6 +97,13 @@ const page = async ({ params }: Params) => {
           />
         ))}
       </div>
+
+      <AllAnswer
+        // questionId={JSON.stringify(result._id)}
+        questionId={result._id.toString()}
+        userId={JSON.stringify(mongoUser?._id)}
+        totalAnswers={result.answers.length}
+      />
 
       <Answer
         question={result.content}
