@@ -18,6 +18,8 @@ export async function createAnswer(params: CreateAnswerParams) {
       question,
     });
 
+    console.log("New Answer: ", { newAnswer });
+
     // Add the answer to the question's answers array
     await Question.findByIdAndUpdate(question, {
       $push: { answers: newAnswer._id },

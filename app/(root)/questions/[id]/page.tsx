@@ -3,7 +3,9 @@ import Metrix from "@/components/shared/Metrix";
 import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTags from "@/components/shared/RenderTags";
 import { getQuestionById } from "@/lib/actions/question.action";
+import { getUserById } from "@/lib/actions/user.action";
 import { formatNumber, getTimestamp } from "@/lib/utils";
+import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -21,6 +23,12 @@ const page = async ({ params }: Params) => {
   // console.log("Resolved Params:", resolvedParams);
 
   const result = await getQuestionById({ questionId });
+  const { userId: clerkId } = await auth();
+
+  let mongoUser;
+  if (clerkId) {
+    mongoUser = await getUserById({ userId: clerkId });
+  }
 
   if (!result) {
     return <div>Question not found</div>;
@@ -89,7 +97,11 @@ const page = async ({ params }: Params) => {
         ))}
       </div>
 
-      <Answer />
+      <Answer
+        question={result.content}
+        questionId={JSON.stringify(result._id)}
+        authorId={JSON.stringify(mongoUser?._id)}
+      />
     </>
   );
 };
