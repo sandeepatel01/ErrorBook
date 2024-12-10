@@ -98,28 +98,17 @@ export async function getQuestionById(params: GetQuestionByIdParams) {
     const { questionId } = params;
 
     const question = await Question.findById(questionId)
-      .populate({
+      .populate<{ tags: ITag[]; author: IUser }>({
         path: "tags",
         model: Tag,
         select: "_id name",
       })
-      .populate({
+      .populate<{ tags: ITag[]; author: IUser }>({
         path: "author",
         model: User,
         select: "_id name picture",
-      });
-
-    // .populate<{ tags: ITag[]; author: IUser }>({
-    //   path: "tags",
-    //   model: Tag,
-    //   select: "_id name",
-    // })
-    // .populate<{ tags: ITag[]; author: IUser }>({
-    //   path: "author",
-    //   model: User,
-    //   select: "_id name picture",
-    // })
-    // .lean();
+      })
+      .lean();
 
     return question;
   } catch (error) {

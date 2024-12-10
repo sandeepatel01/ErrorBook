@@ -2,12 +2,28 @@ import Metrix from "@/components/shared/Metrix";
 import ParseHTML from "@/components/shared/ParseHTML";
 import { getQuestionById } from "@/lib/actions/question.action";
 import { formatNumber, getTimestamp } from "@/lib/utils";
+import console from "console";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const page = async ({ params }: { params: { id: string } }) => {
-  const result = await getQuestionById({ questionId: params.id });
+interface Params {
+  params: {
+    id: string;
+  };
+}
+
+const page = async ({ params }: Params) => {
+  const resolvedParams = await params;
+  const questionId = resolvedParams.id;
+
+  console.log("Resolved Params:", resolvedParams);
+
+  const result = await getQuestionById({ questionId });
+
+  if (!result) {
+    return <div>Question not found</div>;
+  }
 
   return (
     <>
