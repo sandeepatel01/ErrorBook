@@ -11,7 +11,7 @@ import {
   UpdateUserParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
-import Question from "@/models/question.model";
+import Question, { IQuestion } from "@/models/question.model";
 import { FilterQuery } from "mongoose";
 import Tag from "@/models/tag.model";
 
@@ -151,23 +151,42 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
       ? { title: { $regex: new RegExp(searchQuery, "i") } }
       : {};
 
-    const user = await User.findOne({ clerkId }).populate({
-      path: "saved",
-      match: query,
-      options: { sort: { createdAt: -1 } },
-      populate: [
-        { path: "author", model: User, select: "_id clerkId name picture" },
-        { path: "tags", model: Tag, select: "_id name" },
-      ],
-    });
+    const user = await User.findOne({ clerkId })
+      .populate({
+        path: "saved",
+        match: query,
+        options: { sort: { createdAt: -1 } },
+        populate: [
+          { path: "author", model: User, select: "_id clerkId name picture" },
+          { path: "tags", model: Tag, select: "_id name" },
+        ],
+      })
+      .lean();
 
     if (!user) {
       throw new Error("User not found");
     }
 
-    const savedQuestions = user.saved;
+    // TypeScript ko `user` ke type ka pata chalne dena
+    if (Array.isArray(user)) {
+      throw new Error("User data is an array, expected a single user object");
+    }
 
-    return { questions: savedQuestions };
+    // const savedQuestions = user.saved;
+    // Map saved questions to convert _id (Buffer) to string
+    const savedQuestions = user.saved.map((question: any) => ({
+      ...question,
+      _id: question._id.toString(), // Convert _id to string
+      author: question.author
+        ? {
+            ...question.author,
+            _id: question.author._id.toString(),
+          }
+        : null,
+      tags: question.tags.map((tag: any) => tag._id.toString()), // Convert tags _id to string
+    }));
+
+    return { questions: savedQuestions }; // Make sure this return statement is here
   } catch (error) {
     console.log("Error in getting saved questions: ", error);
     throw error;

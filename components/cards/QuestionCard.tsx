@@ -4,7 +4,7 @@ import RenderTags from "../shared/RenderTags";
 import Metrix from "../shared/Metrix";
 import { formatNumber, getTimestamp } from "@/lib/utils";
 
-interface QuestionCardProps {
+export interface QuestionCardProps {
   _id: string;
   title: string;
   tags: { _id: string; name: string }[];
