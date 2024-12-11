@@ -6,10 +6,14 @@ import {
   CreateUserParams,
   DeleteUserParams,
   GetAllUsersParams,
+  GetSavedQuestionsParams,
+  ToggleSaveQuestionParams,
   UpdateUserParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/models/question.model";
+import { FilterQuery } from "mongoose";
+import Tag from "@/models/tag.model";
 
 export async function getUserById(params: any) {
   await connectToDatabase();
@@ -97,6 +101,75 @@ export async function getAllUsers(params: GetAllUsersParams) {
     return { users };
   } catch (error) {
     console.log("Error in getting all users: ", error);
+    throw error;
+  }
+}
+
+export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
+  await connectToDatabase();
+
+  try {
+    const { questionId, userId, path } = params;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const isQuestionSaved = user.saved.includes(questionId);
+    if (isQuestionSaved) {
+      // remove question from saved questions
+      await User.findByIdAndUpdate(
+        userId,
+        { $pull: { saved: questionId } },
+        { new: true },
+      );
+    } else {
+      // add question to saved questions
+      await User.findByIdAndUpdate(
+        userId,
+        { $addToSet: { saved: questionId } },
+        { new: true },
+      );
+    }
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log("Error in toggling save question:", error);
+    throw error;
+  }
+}
+
+export async function getSavedQuestions(params: GetSavedQuestionsParams) {
+  await connectToDatabase();
+
+  try {
+    const { clerkId, page = 1, pageSize = 20, filter, searchQuery } = params;
+
+    const query: FilterQuery<typeof Question> = searchQuery
+      ? { title: { $regex: new RegExp(searchQuery, "i") } }
+      : {};
+
+    const user = await User.findOne({ clerkId }).populate({
+      path: "saved",
+      match: query,
+      options: { sort: { createdAt: -1 } },
+      populate: [
+        { path: "author", model: User, select: "_id clerkId name picture" },
+        { path: "tags", model: Tag, select: "_id name" },
+      ],
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const savedQuestions = user.saved;
+
+    return { questions: savedQuestions };
+  } catch (error) {
+    console.log("Error in getting saved questions: ", error);
     throw error;
   }
 }

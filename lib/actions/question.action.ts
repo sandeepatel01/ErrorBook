@@ -8,7 +8,6 @@ import {
   GetQuestionByIdParams,
   GetQuestionsParams,
   QuestionVoteParams,
-  ToggleSaveQuestionParams,
 } from "./shared.types";
 import User, { IUser } from "@/models/user.model";
 import { revalidatePath } from "next/cache";
@@ -198,42 +197,6 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     revalidatePath(path);
   } catch (error) {
     console.log("Error in downvoting question:", error);
-    throw error;
-  }
-}
-
-export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
-  await connectToDatabase();
-
-  try {
-    const { questionId, userId, path } = params;
-
-    const user = await User.findById(userId);
-
-    if (!user) {
-      throw new Error("User not found");
-    }
-
-    const isQuestionSaved = user.saved.includes(questionId);
-    if (isQuestionSaved) {
-      // remove question from saved questions
-      await User.findByIdAndUpdate(
-        userId,
-        { $pull: { saved: questionId } },
-        { new: true },
-      );
-    } else {
-      // add question to saved questions
-      await User.findByIdAndUpdate(
-        userId,
-        { $addToSet: { saved: questionId } },
-        { new: true },
-      );
-    }
-
-    revalidatePath(path);
-  } catch (error) {
-    console.log("Error in toggling save question:", error);
     throw error;
   }
 }

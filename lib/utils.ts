@@ -39,7 +39,13 @@ export const getTimestamp = (createdAt: Date): string => {
   return `${differenceInYears} year${differenceInYears > 1 ? "s" : ""} ago`;
 };
 
-export function formatNumber(num: number): string {
+export function formatNumber(num: number | undefined | null): string {
+  // Check for invalid numbers (undefined or null)
+  if (num === undefined || num === null) {
+    return "0"; // or return a fallback value like 'N/A' depending on your use case
+  }
+
+  // Format based on number size
   if (num >= 1_000_000) {
     return (num / 1_000_000).toFixed(1) + "M";
   } else if (num >= 1_000) {
