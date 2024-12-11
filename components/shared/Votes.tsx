@@ -3,6 +3,7 @@
 import { downvoteAnswer, upvoteAnswer } from "@/lib/actions/answer.action";
 import {
   downvoteQuestion,
+  toggleSaveQuestion,
   upvoteQuestion,
 } from "@/lib/actions/question.action";
 import { formatNumber } from "@/lib/utils";
@@ -37,7 +38,13 @@ const Votes = ({
   const [localHasUpvoted, setLocalHasUpvoted] = useState(initialUpvoted);
   const [localHasDownvoted, setLocalHasDownvoted] = useState(initialDownvoted);
 
-  const handleSave = () => {};
+  const handleSave = async () => {
+    await toggleSaveQuestion({
+      questionId: JSON.parse(itemId),
+      userId: JSON.parse(userId),
+      path: pathname,
+    });
+  };
 
   const handleVote = async (action: string) => {
     if (!userId) return;
