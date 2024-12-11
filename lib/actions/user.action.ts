@@ -11,7 +11,7 @@ import {
   UpdateUserParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
-import Question, { IQuestion } from "@/models/question.model";
+import Question from "@/models/question.model";
 import { FilterQuery } from "mongoose";
 import Tag from "@/models/tag.model";
 
