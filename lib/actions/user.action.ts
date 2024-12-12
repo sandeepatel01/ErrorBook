@@ -183,7 +183,10 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
             _id: question.author._id.toString(),
           }
         : null,
-      tags: question.tags.map((tag: any) => tag._id.toString()), // Convert tags _id to string
+      tags: question.tags.map((tag: any) => ({
+        _id: tag._id.toString(), // Include both _id and name
+        name: tag.name,
+      })),
     }));
 
     return { questions: savedQuestions }; // Make sure this return statement is here
