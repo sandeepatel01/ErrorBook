@@ -44,7 +44,7 @@ body {
     );
   }
   .tab {
-    @apply text-light-5 min-h-full bg-light-800 dark:bg-dark-400;
+    @apply min-h-full bg-light-800 text-light-500 dark:bg-dark-400;
   }
 
   .no-focus {

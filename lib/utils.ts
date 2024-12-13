@@ -54,3 +54,34 @@ export function formatNumber(num: number | undefined | null): string {
     return num.toString();
   }
 }
+
+// export const getJoinedDate = (date: Date): string => {
+//   // Extract the month and year from the Date object
+//   const month = date.toLocaleString("default", { month: "long" });
+//   const year = date.getFullYear();
+
+//   // Create the joined date string (e.g., "September 2023")
+//   const joinedDate = `${month} ${year}`;
+
+//   return joinedDate;
+// };
+
+export const getJoinedDate = (date?: Date | string): string => {
+  try {
+    // Parse date if it is a string
+    const validDate =
+      date instanceof Date ? date : new Date(date || Date.now());
+
+    if (isNaN(validDate.getTime())) {
+      throw new Error("Invalid date");
+    }
+
+    const month = validDate.toLocaleString("default", { month: "long" });
+    const year = validDate.getFullYear();
+
+    return `${month} ${year}`;
+  } catch (error) {
+    console.error("Error in getJoinedDate:", error);
+    return "Invalid Date";
+  }
+};
