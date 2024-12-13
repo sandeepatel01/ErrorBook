@@ -9,6 +9,7 @@ import Link from "next/link";
 import React from "react";
 import { getJoinedDate } from "@/lib/utils";
 import ProfileLink from "@/components/shared/ProfileLink";
+import Stats from "@/components/shared/Stats";
 
 const page = async ({ params, searchParams }: URLProps) => {
   const { userId: clerkId } = await auth();
@@ -65,7 +66,7 @@ const page = async ({ params, searchParams }: URLProps) => {
           <SignedIn>
             {clerkId === userInfo?.user.clerkId && (
               <Link href="/profile/edit">
-                <Button className="paragraph-medium btn-secondary text-dark300_light900 min-h-[46px] min-w-[175px] px-4 py-3">
+                <Button className="paragraph-medium btn-secondary text-dark300_light900 min-h-[46px] min-w-[175px] rounded-xl px-4 py-3">
                   Edit Profile
                 </Button>
               </Link>
@@ -73,7 +74,12 @@ const page = async ({ params, searchParams }: URLProps) => {
           </SignedIn>
         </div>
       </div>
-      Stats
+
+      <Stats
+        totalQuestions={userInfo.totalQuestions}
+        totalAnswers={userInfo.totalAnswers}
+      />
+
       <div className="mt-10 flex gap-10">
         <Tabs defaultValue="top-posts" className="flex-1">
           <TabsList className="background-light800_dark400 min-h-[42px] p-1">
@@ -84,8 +90,8 @@ const page = async ({ params, searchParams }: URLProps) => {
               Answers
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="top-posts">POSTS</TabsContent>
-          <TabsContent value="answers">ANSWERS</TabsContent>
+          <TabsContent value="top-posts">QuestionTab</TabsContent>
+          <TabsContent value="answers">AnswerTab</TabsContent>
         </Tabs>
       </div>
     </>
