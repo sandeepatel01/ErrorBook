@@ -13,9 +13,11 @@ export interface QuestionCardProps {
   upvotes: string[];
   answers: object[];
   createdAt: string;
+  clerkId?: string;
 }
 
 const QuestionCard = ({
+  clerkId,
   _id,
   title,
   tags,

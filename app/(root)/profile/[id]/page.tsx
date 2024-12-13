@@ -10,6 +10,7 @@ import React from "react";
 import { getJoinedDate } from "@/lib/utils";
 import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
+import QuestionTab from "@/components/shared/QuestionTab";
 
 const page = async ({ params, searchParams }: URLProps) => {
   const { userId: clerkId } = await auth();
@@ -90,7 +91,13 @@ const page = async ({ params, searchParams }: URLProps) => {
               Answers
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="top-posts">QuestionTab</TabsContent>
+          <TabsContent value="top-posts">
+            <QuestionTab
+              searchParams={searchParams}
+              userId={userInfo?.user._id}
+              clerkId={clerkId}
+            />
+          </TabsContent>
           <TabsContent value="answers">AnswerTab</TabsContent>
         </Tabs>
       </div>
