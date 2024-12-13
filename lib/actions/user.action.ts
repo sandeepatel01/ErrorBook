@@ -234,7 +234,8 @@ export async function getUserQuestions(params: GetUserStatsParams) {
 
     const userQuestions = await Question.find({ author: userId })
       .sort({
-        createdAt: -1,
+        views: -1,
+        upvotes: -1,
       })
       .populate({
         path: "author",
@@ -250,6 +251,34 @@ export async function getUserQuestions(params: GetUserStatsParams) {
     return { totalQuestions, questions: userQuestions };
   } catch (error) {
     console.log("Error in getting user questions: ", error);
+    throw error;
+  }
+}
+
+export async function getUserAnswers(params: GetUserStatsParams) {
+  await connectToDatabase();
+
+  try {
+    const { userId, page = 1, pageSize = 10 } = params;
+
+    const totalAnswers = await Answer.countDocuments({ author: userId });
+
+    const userAnswers = await Answer.find({ author: userId })
+      .sort({ upvotes: -1 })
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id clerkId name picture",
+      })
+      .populate({
+        path: "question",
+        model: Question,
+        select: "_id title author tags",
+      });
+
+    return { totalAnswers, answers: userAnswers };
+  } catch (error) {
+    console.log("Error in getting user answers: ", error);
     throw error;
   }
 }
