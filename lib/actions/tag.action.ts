@@ -1,6 +1,6 @@
 "use server";
 
-import User from "@/models/user.model";
+import User, { IUser } from "@/models/user.model";
 import { connectToDatabase } from "../dbConnect";
 import {
   GetAllTagsParams,
@@ -8,7 +8,7 @@ import {
   GetTopInteractedTagsParams,
 } from "./shared.types";
 import Tag, { ITag } from "@/models/tag.model";
-import Question from "@/models/question.model";
+import Question, { IQuestion } from "@/models/question.model";
 import { FilterQuery } from "mongoose";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
@@ -44,7 +44,7 @@ export async function getAllTags(params: GetAllTagsParams) {
       ...tag.toObject(),
       _id: tag._id.toString(), // Convert ObjectId to string
     }));
-    console.log("Serialized tags: ", serializedTags);
+    // console.log("Serialized tags: ", serializedTags);
 
     return { tags: serializedTags };
   } catch (error) {
@@ -85,7 +85,28 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
       throw new Error("Tag not found");
     }
 
-    const questions = tag.questions;
+    // const questions = tag.questions;
+
+    // Convert the questions and their authors/tags to plain objects
+    const questions = tag.questions.map((question: any) => {
+      // Convert _id to string
+      question._id = question._id.toString();
+
+      // Convert author ObjectId to string
+      if (question.author && question.author._id) {
+        question.author._id = question.author._id.toString();
+      }
+
+      // Convert tags to strings
+      if (Array.isArray(question.tags)) {
+        question.tags = question.tags.map((tag: any) => ({
+          _id: tag._id.toString(),
+          name: tag.name,
+        }));
+      }
+
+      return question;
+    });
 
     return { tagTitle: tag.name, questions };
   } catch (error) {
