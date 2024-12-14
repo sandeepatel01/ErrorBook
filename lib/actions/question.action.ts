@@ -15,12 +15,24 @@ import User, { IUser } from "@/models/user.model";
 import { revalidatePath } from "next/cache";
 import Answer from "@/models/answer.model";
 import Interaction from "@/models/interation.model";
+import { FilterQuery, ObjectId } from "mongoose";
 
 export async function getQuestions(params: GetQuestionsParams) {
   await connectToDatabase();
 
   try {
-    const questions = await Question.find({})
+    const { searchQuery } = params;
+
+    const query: FilterQuery<typeof Question> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        { title: { $regex: new RegExp(searchQuery, "i") } },
+        { content: { $regex: new RegExp(searchQuery, "i") } },
+      ];
+    }
+
+    const questions = await Question.find({ query })
       .populate<{ tags: ITag[]; author: IUser }>({
         path: "tags",
         model: Tag,
@@ -35,6 +47,7 @@ export async function getQuestions(params: GetQuestionsParams) {
       .sort({ createdAt: -1 });
 
     // Transform questions to plain objects
+
     const serializedQuestions = questions.map((question) => ({
       _id: question._id.toString(),
       title: question.title,
@@ -258,9 +271,31 @@ export async function getHotQuestions() {
   try {
     const hotQuestions = await Question.find({})
       .sort({ views: -1, upvotes: -1 })
-      .limit(5);
+      .limit(5)
+      .lean();
 
-    return hotQuestions;
+    // Convert non-serializable fields to simple values (strings)
+    const plainQuestions = hotQuestions.map((question: any) => {
+      // Convert _id and other ObjectId fields to string
+      question._id = question._id.toString();
+      question.author = question.author.toString(); // Convert author (ObjectId) to string
+
+      // Convert all ObjectId arrays to strings as well
+      question.tags = question.tags.map((tag: ObjectId) => tag.toString());
+      question.upvotes = question.upvotes.map((upvote: ObjectId) =>
+        upvote.toString(),
+      );
+      question.downvotes = question.downvotes.map((downvote: ObjectId) =>
+        downvote.toString(),
+      );
+      question.answers = question.answers.map((answer: ObjectId) =>
+        answer.toString(),
+      );
+
+      return question;
+    });
+
+    return plainQuestions;
   } catch (error) {
     console.log("Error in getting hot questions:", error);
     throw error;

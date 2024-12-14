@@ -104,7 +104,16 @@ export async function getTopPopularTags() {
       { $limit: 5 },
     ]);
 
-    return popularTags;
+    // Manually convert _id from ObjectId to string to avoid serialization issues
+    const plainTags = popularTags.map((tag) => {
+      return {
+        _id: tag._id.toString(), // Convert _id to string
+        name: tag.name,
+        numberOfQuestions: tag.numberOfQuestions,
+      };
+    });
+
+    return plainTags;
   } catch (error) {
     console.log("Error in getting top popular tags: ", error);
     throw error;

@@ -10,6 +10,7 @@ import { getQuestions } from "@/lib/actions/question.action";
 
 export default async function Home() {
   const result = await getQuestions({});
+
   // console.log(result);
   // console.log(result.questions);
 
@@ -44,7 +45,7 @@ export default async function Home() {
 
       <div className="mt-10 flex w-full flex-col gap-6">
         {result.questions.length > 0 ? (
-          result.questions.map((question) => (
+          result.questions.map((question: any) => (
             <QuestionCard
               key={question._id}
               _id={question._id}
