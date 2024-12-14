@@ -5,12 +5,15 @@ import { connectToDatabase } from "../dbConnect";
 import Tag, { ITag } from "@/models/tag.model";
 import {
   CreateQuestionParams,
+  DeleteQuestionParams,
   GetQuestionByIdParams,
   GetQuestionsParams,
   QuestionVoteParams,
 } from "./shared.types";
 import User, { IUser } from "@/models/user.model";
 import { revalidatePath } from "next/cache";
+import Answer from "@/models/answer.model";
+import Interaction from "@/models/interation.model";
 
 export async function getQuestions(params: GetQuestionsParams) {
   await connectToDatabase();
@@ -197,6 +200,27 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     revalidatePath(path);
   } catch (error) {
     console.log("Error in downvoting question:", error);
+    throw error;
+  }
+}
+
+export async function deleteQuestion(params: DeleteQuestionParams) {
+  await connectToDatabase();
+
+  try {
+    const { questionId, path } = params;
+
+    await Question.deleteOne({ _id: questionId });
+    await Answer.deleteMany({ question: questionId });
+    await Interaction.deleteMany({ question: questionId });
+    await Tag.updateMany(
+      { questions: questionId },
+      { $pull: { questions: questionId } },
+    );
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log("Error in deleting question:", error);
     throw error;
   }
 }

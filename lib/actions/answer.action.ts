@@ -4,12 +4,14 @@ import Answer from "@/models/answer.model";
 import {
   AnswerVoteParams,
   CreateAnswerParams,
+  DeleteAnswerParams,
   GetAnswersParams,
 } from "./shared.types";
 import { connectToDatabase } from "../dbConnect";
 import Question from "@/models/question.model";
 import { revalidatePath } from "next/cache";
 import { IUser } from "@/models/user.model";
+import Interaction from "@/models/interation.model";
 // import mongoose from "mongoose";
 
 export async function createAnswer(params: CreateAnswerParams) {
@@ -125,6 +127,32 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
     revalidatePath(path);
   } catch (error) {
     console.log("Error in downvoting answer:", error);
+    throw error;
+  }
+}
+
+export async function deleteAnswer(params: DeleteAnswerParams) {
+  await connectToDatabase();
+
+  try {
+    const { answerId, path } = params;
+
+    const answer = await Answer.findById(answerId);
+
+    if (!answer) {
+      throw new Error("Answer not found");
+    }
+
+    await Answer.deleteOne({ _id: answerId });
+    await Question.updateMany(
+      { _id: answer.question },
+      { $pull: { answers: answerId } },
+    );
+    await Interaction.deleteMany({ answer: answerId });
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log("Error in deleting answer:", error);
     throw error;
   }
 }

@@ -2,6 +2,8 @@ import { formatNumber, getTimestamp } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 import Metrix from "../shared/Metrix";
+import { SignedIn } from "@clerk/nextjs";
+import EditDeleteAction from "../shared/EditDeleteAction";
 
 interface AnswerCardProps {
   clerkId?: string | null;
@@ -28,6 +30,8 @@ const AnswerCard = ({
   upvotes,
   createdAt,
 }: AnswerCardProps) => {
+  const showActionButtons = clerkId && clerkId === author.clerkId;
+
   return (
     <Link
       href={`/questions/${question._id}/#${_id}`}
@@ -42,6 +46,12 @@ const AnswerCard = ({
             {question.title}
           </h3>
         </div>
+
+        <SignedIn>
+          {showActionButtons && (
+            <EditDeleteAction type="Answer" itemId={JSON.stringify(_id)} />
+          )}
+        </SignedIn>
       </div>
 
       <div className="flex-between mt-6 flex-wrap gap-3">

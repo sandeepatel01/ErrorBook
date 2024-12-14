@@ -3,6 +3,8 @@ import React from "react";
 import RenderTags from "../shared/RenderTags";
 import Metrix from "../shared/Metrix";
 import { formatNumber, getTimestamp } from "@/lib/utils";
+import { SignedIn } from "@clerk/nextjs";
+import EditDeleteAction from "../shared/EditDeleteAction";
 
 export interface QuestionCardProps {
   _id: string;
@@ -27,6 +29,8 @@ const QuestionCard = ({
   answers,
   createdAt,
 }: QuestionCardProps) => {
+  const showActionButtons = clerkId && clerkId === author.clerkId;
+
   // console.log("QuestionCard", {
   //   _id,
   //   title,
@@ -51,7 +55,12 @@ const QuestionCard = ({
             </h3>
           </Link>
         </div>
-        {/* TODO : if user is logged in, add edit and delete actions */}
+
+        <SignedIn>
+          {showActionButtons && (
+            <EditDeleteAction type="Question" itemId={JSON.stringify(_id)} />
+          )}
+        </SignedIn>
       </div>
 
       <div className="mt-3.5 flex flex-wrap gap-2">
