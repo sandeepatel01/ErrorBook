@@ -19,17 +19,17 @@ import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Badge } from "../ui/badge";
 import Image from "next/image";
-import { createQuestion } from "@/lib/actions/question.action";
+import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "@/context/ThemeProvider";
 
-const type: any = "create";
-
 interface QuestionProps {
+  type?: string;
   mongoUserId: string;
+  questionDetails?: string;
 }
 
-const Question = ({ mongoUserId }: QuestionProps) => {
+const Question = ({ mongoUserId, questionDetails, type }: QuestionProps) => {
   const { mode } = useTheme();
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,13 +43,25 @@ const Question = ({ mongoUserId }: QuestionProps) => {
   //   }
   // };
 
+  const parsedQuestionDetails = (() => {
+    try {
+      return questionDetails ? JSON.parse(questionDetails) : null;
+    } catch (error) {
+      console.error("Error parsing questionDetails:", error);
+      return null;
+    }
+  })();
+
+  const groupedTags =
+    parsedQuestionDetails?.tags?.map((tag: any) => tag.name) || [];
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof QuestionSchema>>({
     resolver: zodResolver(QuestionSchema),
     defaultValues: {
-      title: "",
-      explanation: "",
-      tags: [],
+      title: parsedQuestionDetails?.title || "",
+      explanation: parsedQuestionDetails?.content || "",
+      tags: groupedTags || [],
     },
   });
 
@@ -59,15 +71,24 @@ const Question = ({ mongoUserId }: QuestionProps) => {
     setIsSubmitting(true);
 
     try {
-      await createQuestion({
-        title: values.title,
-        content: values.explanation,
-        tags: values.tags,
-        author: JSON.parse(mongoUserId),
-        path: pathname,
-      });
-
-      router.push("/");
+      if (type === "Edit") {
+        await editQuestion({
+          questionId: parsedQuestionDetails._id,
+          title: values.title,
+          content: values.explanation,
+          path: pathname,
+        });
+        router.push(`/questions/${parsedQuestionDetails._id}`);
+      } else {
+        await createQuestion({
+          title: values.title,
+          content: values.explanation,
+          tags: values.tags,
+          author: JSON.parse(mongoUserId),
+          path: pathname,
+        });
+        router.push("/");
+      }
     } catch (error) {
       console.error("Error creating question:", error);
     } finally {
@@ -156,7 +177,7 @@ const Question = ({ mongoUserId }: QuestionProps) => {
                   }
                   onBlur={field.onBlur}
                   onEditorChange={(content) => field.onChange(content)}
-                  initialValue=""
+                  initialValue={parsedQuestionDetails?.content || ""}
                   init={{
                     height: 350,
                     menubar: false,
@@ -207,6 +228,7 @@ const Question = ({ mongoUserId }: QuestionProps) => {
               <FormControl className="mt-3.5">
                 <>
                   <Input
+                    disabled={type === "Edit"}
                     className="no-focus paragraph-regular light-border-2 min-h-[56px] rounded-xl border bg-light-900 text-dark-300 dark:border-dark-400 dark:bg-dark-300 dark:text-light-700"
                     placeholder="Add tags..."
                     onKeyDown={(event) => handleInputKeyDown(event, field)}
@@ -217,16 +239,22 @@ const Question = ({ mongoUserId }: QuestionProps) => {
                         <Badge
                           key={tag}
                           className="subtle-medium background-light800_dark300 text-light400_light500 flex items-center justify-center gap-2 rounded-xl border-none px-4 py-2 capitalize"
+                          onClick={() =>
+                            type !== "Edit"
+                              ? handleRemoveTag(tag, field)
+                              : () => {}
+                          }
                         >
-                          {tag}{" "}
-                          <Image
-                            src="/assets/icons/close.svg"
-                            width={12}
-                            height={12}
-                            alt="close icon"
-                            className="cursor-pointer object-contain invert-0 dark:invert"
-                            onClick={() => handleRemoveTag(tag, field)}
-                          />
+                          {tag}
+                          {type !== "Edit" && (
+                            <Image
+                              src="/assets/icons/close.svg"
+                              width={12}
+                              height={12}
+                              alt="close icon"
+                              className="cursor-pointer object-contain invert-0 dark:invert"
+                            />
+                          )}
                         </Badge>
                       ))}
                     </div>
@@ -248,9 +276,9 @@ const Question = ({ mongoUserId }: QuestionProps) => {
           disabled={isSubmitting}
         >
           {isSubmitting ? (
-            <>{type === "edit" ? "Editing..." : "Posting..."}</>
+            <>{type === "Edit" ? "Editing..." : "Posting..."}</>
           ) : (
-            <>{type === "edit" ? "Edit Question" : "Ask a question"}</>
+            <>{type === "Edit" ? "Edit Question" : "Ask a question"}</>
           )}
         </Button>
       </form>
