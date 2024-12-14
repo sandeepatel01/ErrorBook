@@ -238,9 +238,24 @@ export async function getUserQuestions(params: GetUserStatsParams) {
         path: "tags",
         model: Tag,
         select: "_id name",
-      });
+      })
+      .lean();
 
-    return { totalQuestions, questions: userQuestions };
+    // Convert ObjectIds to strings in questions and their nested fields
+    const questions = userQuestions.map((question: any) => ({
+      ...question,
+      _id: question._id.toString(), // Convert _id to string
+      author: {
+        ...question.author,
+        _id: question.author._id.toString(), // Convert author _id to string
+      },
+      tags: question.tags.map((tag: any) => ({
+        ...tag,
+        _id: tag._id.toString(), // Convert tag _id to string
+      })),
+    }));
+
+    return { totalQuestions, questions };
   } catch (error) {
     console.log("Error in getting user questions: ", error);
     throw error;
