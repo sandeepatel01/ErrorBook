@@ -26,21 +26,21 @@ const LeftSidebar = () => {
             (pathname.includes(item.route) && item.route.length > 1) ||
             pathname === item.route;
 
-          // if (item.route === "/profile") {
-          //   if (userId) {
-          //     item.route = `${item.route}/${userId}`;
-          //   } else {
-          //     return null;
-          //   }
-          // }
-
           const dynamicRoute =
             item.route === "/profile" && userId
               ? `${item.route}/${userId}`
               : item.route;
 
-          if (item.route === "/profile" && !userId) {
-            return null;
+          // if (item.route === "/profile" && !userId) {
+          //   return null;
+          // }
+
+          if (item.route === "/profile") {
+            if (userId) {
+              item.route = `${item.route}/${userId}`;
+            } else {
+              return null;
+            }
           }
 
           return (
