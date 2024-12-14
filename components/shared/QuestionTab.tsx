@@ -19,7 +19,7 @@ const QuestionTab = async ({
   });
   return (
     <>
-      {result.questions.map((item) => (
+      {result.questions.map((item: any) => (
         <QuestionCard
           key={item._id}
           _id={item._id}
