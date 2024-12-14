@@ -14,10 +14,9 @@ export default async function Home() {
   const result = await getSavedQuestions({
     clerkId: userId,
   });
-  // console.log(result);
-  // console.log(result.questions);
-  console.log(result.questions[0].tags);
 
+  console.log("Full Result:", result);
+  console.log("Questions Array:", result.questions);
 
   return (
     <>
