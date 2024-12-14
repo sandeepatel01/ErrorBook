@@ -4,39 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import RenderTags from "./RenderTags";
-import { getHotQuestions } from "@/lib/actions/question.action";
 
-const popularTags = [
-  {
-    _id: "1",
-    name: "react",
-    totalQuestions: 5,
-  },
-  {
-    _id: "2",
-    name: "javascript",
-    totalQuestions: 10,
-  },
-  {
-    _id: "3",
-    name: "html",
-    totalQuestions: 15,
-  },
-  {
-    _id: "4",
-    name: "css",
-    totalQuestions: 5,
-  },
-  {
-    _id: "5",
-    name: "python",
-    totalQuestions: 2,
-  },
-];
+interface RightSidebarProps {
+  hotQuestions: any[];
+  popularTags: any[];
+}
 
-const RightSidebar = async () => {
-  const hotQuestions = await getHotQuestions();
-
+const RightSidebar = ({ hotQuestions, popularTags }: RightSidebarProps) => {
   return (
     <section className="background-light900_dark200 light-border custom-scrollbar sticky right-0 top-0 flex h-screen w-[350px] flex-col overflow-y-auto border-l p-6 pt-36 shadow-light-300 dark:shadow-none max-xl:hidden">
       <div>
@@ -70,7 +44,7 @@ const RightSidebar = async () => {
               key={tag._id}
               _id={tag._id}
               name={tag.name}
-              totalQuestions={tag.totalQuestions}
+              totalQuestions={tag.numberOfQuestions}
               showCount
             />
           ))}
