@@ -8,7 +8,7 @@ import {
   GetTopInteractedTagsParams,
 } from "./shared.types";
 import Tag, { ITag } from "@/models/tag.model";
-import Question, { IQuestion } from "@/models/question.model";
+import Question from "@/models/question.model";
 import { FilterQuery } from "mongoose";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
