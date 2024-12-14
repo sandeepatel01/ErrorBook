@@ -3,14 +3,14 @@ import React from "react";
 import RenderTags from "../shared/RenderTags";
 import Metrix from "../shared/Metrix";
 import { formatNumber, getTimestamp } from "@/lib/utils";
-// import { SignedIn } from "@clerk/nextjs";
-// import EditDeleteAction from "../shared/EditDeleteAction";
+import { SignedIn } from "@clerk/nextjs";
+import EditDeleteAction from "../shared/EditDeleteAction";
 
 export interface QuestionCardProps {
   _id: string;
   title: string;
   tags: { _id: string; name: string }[];
-  author: { _id: string; name: string; picture: string };
+  author: { _id: string; name: string; picture: string; clerkId: string };
   views: number;
   upvotes: string[];
   answers: object[];
@@ -56,11 +56,11 @@ const QuestionCard = ({
           </Link>
         </div>
 
-        {/* <SignedIn>
+        <SignedIn>
           {showActionButtons && (
             <EditDeleteAction type="Question" itemId={JSON.stringify(_id)} />
           )}
-        </SignedIn> */}
+        </SignedIn>
       </div>
 
       <div className="mt-3.5 flex flex-wrap gap-2">
