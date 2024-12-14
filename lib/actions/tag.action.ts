@@ -1,6 +1,6 @@
 "use server";
 
-import User, { IUser } from "@/models/user.model";
+import User from "@/models/user.model";
 import { connectToDatabase } from "../dbConnect";
 import {
   GetAllTagsParams,
