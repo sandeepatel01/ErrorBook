@@ -37,14 +37,36 @@ export async function getAllTags(params: GetAllTagsParams) {
   await connectToDatabase();
 
   try {
-    const { searchQuery } = params;
+    const { searchQuery, filter } = params;
+    let sortOptions: { [key: string]: 1 | -1 } = {};
 
     const query: FilterQuery<ITag> = {};
     if (searchQuery) {
       query.$or = [{ name: { $regex: new RegExp(searchQuery, "i") } }];
     }
 
-    const tags = await Tag.find(query).sort({ createdAt: -1 });
+    switch (filter) {
+      case "popular":
+        sortOptions = { questions: -1 };
+        break;
+
+      case "recent":
+        sortOptions = { createdAt: -1 };
+        break;
+
+      case "name":
+        sortOptions = { name: -1 };
+        break;
+
+      case "old":
+        sortOptions = { createdAt: 1 };
+        break;
+
+      default:
+        break;
+    }
+
+    const tags = await Tag.find(query).sort(sortOptions);
 
     // Serialize _id
     const serializedTags = tags.map((tag) => ({

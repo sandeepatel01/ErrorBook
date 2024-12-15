@@ -16,11 +16,14 @@ interface Params {
   params: {
     id: string;
   };
+  searchParams: { [key: string]: string | undefined };
 }
 
-const page = async ({ params }: Params) => {
+const page = async ({ params, searchParams }: Params) => {
   const resolvedParams = await params;
   const questionId = resolvedParams.id;
+
+  const queryObj = await Promise.resolve(searchParams ?? {});
 
   // console.log("Resolved Params:", resolvedParams);
 
@@ -115,6 +118,8 @@ const page = async ({ params }: Params) => {
         questionId={result._id.toString()}
         userId={mongoUser?._id}
         totalAnswers={result.answers.length}
+        page={queryObj?.page}
+        filter={queryObj?.filter}
       />
 
       <Answer

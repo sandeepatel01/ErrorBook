@@ -12,7 +12,6 @@ import Question from "@/models/question.model";
 import { revalidatePath } from "next/cache";
 import { IUser } from "@/models/user.model";
 import Interaction from "@/models/interation.model";
-// import mongoose from "mongoose";
 
 export async function createAnswer(params: CreateAnswerParams) {
   await connectToDatabase();
@@ -46,13 +45,35 @@ export async function getAnswers(params: GetAnswersParams) {
   await connectToDatabase();
 
   try {
-    const { questionId } = params;
+    const { questionId, sortBy } = params;
+    let sortOptions: { [key: string]: 1 | -1 } = {};
+
+    switch (sortBy) {
+      case "highestUpvotes":
+        sortOptions = { upvotes: -1 };
+        break;
+
+      case "lowestUpvotes":
+        sortOptions = { upvotes: 1 };
+        break;
+
+      case "recent":
+        sortOptions = { createdAt: -1 };
+        break;
+
+      case "old":
+        sortOptions = { createdAt: 1 };
+        break;
+
+      default:
+        break;
+    }
 
     const answers = await Answer.find({ question: questionId })
       .populate<{
         author: IUser;
       }>("author", "_id clerkId name picture")
-      .sort({ createdAt: -1 });
+      .sort(sortOptions);
 
     return { answers };
   } catch (error) {
