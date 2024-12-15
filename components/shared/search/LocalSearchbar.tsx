@@ -29,11 +29,38 @@ const LocalSearchbar = ({
 
   const [search, setSearch] = useState(query || "");
 
+  // useEffect(() => {
+  //   const delayDebounceFn = setTimeout(() => {
+  //     if (search) {
+  //       const newUrl = formUrlQuery({
+  //         params: searchParams.toString(),
+  //         key: "q",
+  //         value: search,
+  //       });
+
+  //       router.push(newUrl, { scroll: false });
+  //     } else {
+  //       if (pathname === route) {
+  //         const newUrl = removeKeysFromQuery({
+  //           params: searchParams.toString(),
+  //           keysToRemove: ["q"],
+  //         });
+
+  //         router.push(newUrl, { scroll: false });
+  //       }
+  //     }
+  //   }, 300);
+
+  //   return () => clearTimeout(delayDebounceFn);
+  // }, [search, searchParams, router, pathname, query, route]);
+
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
+      const currentParams = Object.fromEntries(searchParams.entries());
+
       if (search) {
         const newUrl = formUrlQuery({
-          params: searchParams.toString(),
+          params: currentParams,
           key: "q",
           value: search,
         });
@@ -42,7 +69,7 @@ const LocalSearchbar = ({
       } else {
         if (pathname === route) {
           const newUrl = removeKeysFromQuery({
-            params: searchParams.toString(),
+            params: currentParams,
             keysToRemove: ["q"],
           });
 

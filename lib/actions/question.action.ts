@@ -32,7 +32,19 @@ export async function getQuestions(params: GetQuestionsParams) {
       ];
     }
 
-    const questions = await Question.find({ query })
+    // const query: FilterQuery<typeof Question> = searchQuery
+    //   ? {
+    //       $or: [
+    //         { title: { $regex: searchQuery, $options: "i" } }, // Correct Regex usage
+    //         { content: { $regex: searchQuery, $options: "i" } },
+    //       ],
+    //     }
+    //   : {};
+
+    // console.log("MongoDB Query:", query);
+    // console.log("MongoDB Query:", JSON.stringify(query, null, 2));
+
+    const questions = await Question.find(query)
       .populate<{ tags: ITag[]; author: IUser }>({
         path: "tags",
         model: Tag,
@@ -43,11 +55,10 @@ export async function getQuestions(params: GetQuestionsParams) {
         model: User,
         select: "_id name picture",
       })
-      .lean() // Convert to plain JS objects
+      .lean()
       .sort({ createdAt: -1 });
 
     // Transform questions to plain objects
-
     const serializedQuestions = questions.map((question) => ({
       _id: question._id.toString(),
       title: question.title,

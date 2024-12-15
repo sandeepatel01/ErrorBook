@@ -88,15 +88,16 @@ export const getJoinedDate = (date?: Date | string): string => {
 };
 
 interface UrlQueryParams {
-  params: string;
+  params: Record<string, string>;
   key: string;
   value: string | null;
 }
 
 export const formUrlQuery = ({ params, key, value }: UrlQueryParams) => {
-  const currentUrl = qs.parse(params);
+  // const currentUrl = qs.parse(params);
+  const currentUrl = { ...params };
 
-  currentUrl[key] = value;
+  currentUrl[key] = value || "";
 
   return qs.stringifyUrl(
     {
@@ -108,7 +109,7 @@ export const formUrlQuery = ({ params, key, value }: UrlQueryParams) => {
 };
 
 interface removeUrlQueryParams {
-  params: string;
+  params: Record<string, string>;
   keysToRemove: string[];
 }
 
@@ -116,7 +117,8 @@ export const removeKeysFromQuery = ({
   params,
   keysToRemove,
 }: removeUrlQueryParams) => {
-  const currentUrl = qs.parse(params);
+  // const currentUrl = qs.parse(params);
+  const currentUrl = { ...params };
 
   keysToRemove.forEach((key) => delete currentUrl[key]);
 

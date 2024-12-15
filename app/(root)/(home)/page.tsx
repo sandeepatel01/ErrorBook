@@ -13,7 +13,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
   const queryObj = await Promise.resolve(searchParams ?? {});
   const searchQuery = queryObj.q || "";
 
-  console.log("Search query: ", searchQuery);
+  // console.log("Search query: ", searchQuery);
 
   const result = await getQuestions({
     searchQuery,
