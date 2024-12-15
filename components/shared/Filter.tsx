@@ -8,6 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { formUrlQuery } from "@/lib/utils";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface FilterProps {
   filters: {
@@ -19,9 +21,27 @@ interface FilterProps {
 }
 
 const Filter = ({ filters, otherClasses, containerClasses }: FilterProps) => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const paramFilter = searchParams.get("filter");
+
+  const handleUpdateParams = (value: string) => {
+    const newUlr = formUrlQuery({
+      params: searchParams.toString(),
+      key: "filter",
+      value,
+    });
+
+    router.push(newUlr, { scroll: false });
+  };
+
   return (
     <div className={`${containerClasses} relative`}>
-      <Select>
+      <Select
+        onValueChange={handleUpdateParams}
+        defaultValue={paramFilter || ""}
+      >
         <SelectTrigger
           className={`${otherClasses} background-light800_dark300 text-dark500_light700 rounded-xl border border-light-800 px-5 py-2.5 text-[14px] font-normal leading-[19.6px] dark:border-dark-300`}
         >

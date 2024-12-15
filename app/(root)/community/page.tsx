@@ -13,6 +13,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
 
   const result = await getAllUsers({
     searchQuery,
+    filter: queryObj.filter || "",
   });
 
   return (
