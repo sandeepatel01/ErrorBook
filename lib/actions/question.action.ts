@@ -21,15 +21,37 @@ export async function getQuestions(params: GetQuestionsParams) {
   await connectToDatabase();
 
   try {
-    const { searchQuery } = params;
+    const { searchQuery, filter } = params;
 
     const query: FilterQuery<typeof Question> = {};
+    let sortOptions: { [key: string]: 1 | -1 } = {};
 
     if (searchQuery) {
       query.$or = [
         { title: { $regex: new RegExp(searchQuery, "i") } },
         { content: { $regex: new RegExp(searchQuery, "i") } },
       ];
+    }
+
+    switch (filter) {
+      case "newest":
+        sortOptions = { createdAt: -1 };
+        break;
+
+      case "frequent":
+        sortOptions = { views: -1 };
+        break;
+
+      case "unanswered":
+        query.answers = { $size: 0 };
+        break;
+
+      // case "recommended":
+      //   query.upvotes = { $size: 0 };
+      //   break;
+
+      default:
+        break;
     }
 
     // const query: FilterQuery<typeof Question> = searchQuery
@@ -56,7 +78,7 @@ export async function getQuestions(params: GetQuestionsParams) {
         select: "_id name picture",
       })
       .lean()
-      .sort({ createdAt: -1 });
+      .sort(sortOptions);
 
     // Transform questions to plain objects
     const serializedQuestions = questions.map((question) => ({

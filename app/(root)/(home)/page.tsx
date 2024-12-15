@@ -17,9 +17,12 @@ export default async function Home({ searchParams }: SearchParamsProps) {
 
   const result = await getQuestions({
     searchQuery,
+    filter: queryObj.filter || "",
   });
 
   const questions = result?.questions || [];
+
+  // TODO: fetch Recommended questions
 
   // console.log(result);
   // console.log(result.questions);
