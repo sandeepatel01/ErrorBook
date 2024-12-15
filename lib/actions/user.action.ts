@@ -17,7 +17,6 @@ import Question from "@/models/question.model";
 import { FilterQuery } from "mongoose";
 import Tag from "@/models/tag.model";
 import Answer from "@/models/answer.model";
-import { create } from "domain";
 
 export async function getUserById(params: any) {
   await connectToDatabase();
