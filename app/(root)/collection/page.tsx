@@ -5,14 +5,19 @@ import NoResult from "@/components/shared/NoResult";
 import QuestionCard from "@/components/cards/QuestionCard";
 import { getSavedQuestions } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
+import { SearchParamsProps } from "@/types";
 
-export default async function Home() {
+export default async function Home({ searchParams }: SearchParamsProps) {
+  const queryObj = await Promise.resolve(searchParams ?? {});
+  const searchQuery = queryObj.q || "";
+
   const { userId } = await auth();
 
   if (!userId) return null;
 
   const result = await getSavedQuestions({
     clerkId: userId,
+    searchQuery,
   });
 
   // console.log("Full Result:", result);
