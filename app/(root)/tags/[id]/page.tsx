@@ -7,13 +7,17 @@ import { URLProps } from "@/types";
 import React from "react";
 
 const page = async ({ params, searchParams }: URLProps) => {
+  const queryObj = await Promise.resolve(searchParams ?? {});
+  const searchQuery = queryObj.q || "";
+
   const { id } = await params;
-  const { q } = await searchParams;
+
+  // const { q } = await searchParams;
 
   const result = await getQuestionsByTagId({
     tagId: id,
     page: 1,
-    searchQuery: q,
+    searchQuery,
   });
 
   return (
@@ -22,7 +26,7 @@ const page = async ({ params, searchParams }: URLProps) => {
 
       <div className="mt-11 w-full">
         <LocalSearchbar
-          route="/"
+          route={`/tags/${id}`}
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           placeholder="Search  tag questions..."

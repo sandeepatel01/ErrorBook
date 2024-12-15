@@ -4,10 +4,16 @@ import NoResult from "@/components/shared/NoResult";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { UserFilters } from "@/constants/filters";
 import { getAllTags } from "@/lib/actions/tag.action";
+import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 
-const Page = async () => {
-  const result = await getAllTags({});
+const Page = async ({ searchParams }: SearchParamsProps) => {
+  const queryObj = await Promise.resolve(searchParams ?? {});
+  const searchQuery = queryObj.q || "";
+
+  const result = await getAllTags({
+    searchQuery,
+  });
   // console.log("result", result);
 
   return (

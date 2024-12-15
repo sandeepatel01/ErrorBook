@@ -37,7 +37,14 @@ export async function getAllTags(params: GetAllTagsParams) {
   await connectToDatabase();
 
   try {
-    const tags = await Tag.find({}).sort({ createdAt: -1 });
+    const { searchQuery } = params;
+
+    const query: FilterQuery<ITag> = {};
+    if (searchQuery) {
+      query.$or = [{ name: { $regex: new RegExp(searchQuery, "i") } }];
+    }
+
+    const tags = await Tag.find(query).sort({ createdAt: -1 });
 
     // Serialize _id
     const serializedTags = tags.map((tag) => ({
