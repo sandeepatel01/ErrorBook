@@ -21,7 +21,10 @@ export async function getQuestions(params: GetQuestionsParams) {
   await connectToDatabase();
 
   try {
-    const { searchQuery, filter } = params;
+    const { searchQuery, filter, page = 1, pageSize = 2 } = params;
+
+    // calculate the skip value based on the page and pageSize
+    const skipAmount = (page - 1) * pageSize;
 
     const query: FilterQuery<typeof Question> = {};
     let sortOptions: { [key: string]: 1 | -1 } = {};
@@ -77,8 +80,14 @@ export async function getQuestions(params: GetQuestionsParams) {
         model: User,
         select: "_id name picture",
       })
+      .skip(skipAmount)
+      .limit(pageSize)
       .lean()
       .sort(sortOptions);
+
+    const totalQuestions = await Question.countDocuments(query);
+
+    const isNext = totalQuestions > skipAmount + questions.length;
 
     // Transform questions to plain objects
     const serializedQuestions = questions.map((question) => ({
@@ -99,7 +108,7 @@ export async function getQuestions(params: GetQuestionsParams) {
       createdAt: question.createdAt.toISOString(),
     }));
 
-    return { questions: serializedQuestions };
+    return { questions: serializedQuestions, isNext };
   } catch (error) {
     console.log("Error in getting questions:", error);
     throw error;

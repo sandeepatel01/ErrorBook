@@ -19,6 +19,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
   const result = await getQuestions({
     searchQuery,
     filter: queryObj.filter || "",
+    page: queryObj?.page ? +queryObj.page : 1,
   });
 
   const questions = result?.questions || [];
