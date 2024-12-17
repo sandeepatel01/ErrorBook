@@ -35,6 +35,7 @@ export async function globalSearch(params: SearchParams) {
 
       for (const { model, searchField, type } of modelsAndTtpes) {
         const queryResult = await model
+          // @ts-ignore
           .find({ [searchField]: regexQuery })
           .limit(2);
 
@@ -63,6 +64,7 @@ export async function globalSearch(params: SearchParams) {
       }
 
       const queryResult = await modelInfo.model
+        // @ts-ignore
         .find({ [modelInfo.searchField]: regexQuery })
         .limit(8)
         .lean();

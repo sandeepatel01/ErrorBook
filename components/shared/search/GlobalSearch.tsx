@@ -6,7 +6,6 @@ import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import GlobalResult from "./GlobalResult";
-import { set } from "mongoose";
 
 const GlobalSearch = () => {
   const router = useRouter();
