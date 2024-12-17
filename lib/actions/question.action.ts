@@ -21,7 +21,7 @@ export async function getQuestions(params: GetQuestionsParams) {
   await connectToDatabase();
 
   try {
-    const { searchQuery, filter, page = 1, pageSize = 2 } = params;
+    const { searchQuery, filter, page = 1, pageSize = 20 } = params;
 
     // calculate the skip value based on the page and pageSize
     const skipAmount = (page - 1) * pageSize;

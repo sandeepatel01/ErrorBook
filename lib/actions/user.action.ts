@@ -89,7 +89,9 @@ export async function getAllUsers(params: GetAllUsersParams) {
   await connectToDatabase();
 
   try {
-    const { searchQuery, filter } = params;
+    const { searchQuery, filter, page = 1, pageSize = 10 } = params;
+
+    const skipAmount = (page - 1) * pageSize;
     let sortOptions: { [key: string]: 1 | -1 } = {};
 
     const query: FilterQuery<typeof User> = {};
@@ -118,9 +120,16 @@ export async function getAllUsers(params: GetAllUsersParams) {
         break;
     }
 
-    const users = await User.find(query).sort(sortOptions);
+    const users = await User.find(query)
+      .sort(sortOptions)
+      .skip(skipAmount)
+      .limit(pageSize);
 
-    return { users };
+    const totalUser = await User.countDocuments(query);
+
+    const isNext = totalUser > skipAmount + users.length;
+
+    return { users, isNext };
   } catch (error) {
     console.log("Error in getting all users: ", error);
     throw error;
