@@ -37,7 +37,9 @@ export async function getAllTags(params: GetAllTagsParams) {
   await connectToDatabase();
 
   try {
-    const { searchQuery, filter } = params;
+    const { searchQuery, filter, page = 1, pageSize = 10 } = params;
+
+    const skipAmount = (page - 1) * pageSize;
     let sortOptions: { [key: string]: 1 | -1 } = {};
 
     const query: FilterQuery<ITag> = {};
@@ -66,7 +68,10 @@ export async function getAllTags(params: GetAllTagsParams) {
         break;
     }
 
-    const tags = await Tag.find(query).sort(sortOptions);
+    const tags = await Tag.find(query)
+      .sort(sortOptions)
+      .skip(skipAmount)
+      .limit(pageSize);
 
     // Serialize _id
     const serializedTags = tags.map((tag) => ({
@@ -75,7 +80,11 @@ export async function getAllTags(params: GetAllTagsParams) {
     }));
     // console.log("Serialized tags: ", serializedTags);
 
-    return { tags: serializedTags };
+    const totalTags = await Tag.countDocuments(query);
+
+    const isNext = totalTags > skipAmount + pageSize;
+
+    return { tags: serializedTags, isNext };
   } catch (error) {
     console.log("Error in getting all tags: ", error);
     throw error;
@@ -86,8 +95,9 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
   await connectToDatabase();
 
   try {
-    const { tagId, page = 1, pageSize = 10, searchQuery } = params;
+    const { tagId, page = 1, pageSize = 2, searchQuery } = params;
 
+    const skipAmount = (page - 1) * pageSize;
     const tagFilter: FilterQuery<ITag> = { _id: tagId };
 
     const tag = await Tag.findOne(tagFilter)
@@ -97,7 +107,11 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
         match: searchQuery
           ? { title: { $regex: searchQuery, $options: "i" } }
           : {},
-        options: { sort: { createdAt: -1 } },
+        options: {
+          sort: { createdAt: -1 },
+          skip: skipAmount,
+          limit: pageSize + 1,
+        },
         populate: [
           { path: "author", model: User, select: "_id clerkId name picture" },
           { path: "tags", model: Tag, select: "_id name" },
@@ -137,7 +151,9 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
       return question;
     });
 
-    return { tagTitle: tag.name, questions };
+    const isNext = tag.questions.length > pageSize;
+
+    return { tagTitle: tag.name, questions, isNext };
   } catch (error) {
     console.log("Error in getting questions by tag id: ", error);
     throw error;
