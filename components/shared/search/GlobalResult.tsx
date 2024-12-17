@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { title } from "process";
 import Image from "next/image";
 import GlobalFilters from "./GlobalFilters";
+import { globalSearch } from "@/lib/actions/general.action";
 
 const GlobalResult = () => {
   const searchParams = useSearchParams();
@@ -27,6 +27,9 @@ const GlobalResult = () => {
       setIsLoading(true);
 
       try {
+        const response = await globalSearch({ query: global, type });
+
+        setResult(JSON.parse(response));
       } catch (error) {
         console.error("Error fetching result: ", error);
         throw error;
@@ -34,10 +37,27 @@ const GlobalResult = () => {
         setIsLoading(false);
       }
     };
+
+    if (global) fetchResult();
   }, [global, type]);
 
   const renderLink = (type: string, id: string) => {
-    return "/";
+    switch (type) {
+      case "user":
+        return `/profile/${id}`;
+
+      case "tag":
+        return `/tags/${id}`;
+
+      case "answer":
+        return `/questions/${id}`;
+
+      case "question":
+        return `/questions/${id}`;
+
+      default:
+        return `/`;
+    }
   };
 
   return (
@@ -63,7 +83,7 @@ const GlobalResult = () => {
             {result.length > 0 ? (
               result.map((item: any, index: number) => (
                 <Link
-                  href={renderLink("type", "id")}
+                  href={renderLink(item.type, item.id)}
                   key={item.type + item.id + index}
                   className="flex w-full cursor-pointer items-start gap-3 px-5 py-2.5 hover:bg-light-700/50 dark:hover:bg-dark-500/50"
                 >
@@ -88,7 +108,7 @@ const GlobalResult = () => {
             ) : (
               <div className="flex-center flex-col px-5">
                 <p className="body-regular text-dark200_light800 px-5 py-2.5">
-                  No result found
+                  Oops, no results found
                 </p>
               </div>
             )}
