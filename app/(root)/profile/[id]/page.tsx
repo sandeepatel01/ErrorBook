@@ -65,7 +65,7 @@ const page = async ({ params, searchParams }: URLProps) => {
             )}
           </div>
         </div>
-        <div>
+        <div className="flex justify-end max-sm:mb-5 max-sm:w-full sm:mt-3">
           <SignedIn>
             {clerkId === userInfo?.user.clerkId && (
               <Link href="/profile/edit">

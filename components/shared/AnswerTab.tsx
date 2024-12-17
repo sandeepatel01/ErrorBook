@@ -1,6 +1,7 @@
 import React from "react";
 import { getUserAnswers } from "@/lib/actions/user.action";
 import AnswerCard from "../cards/AnswerCard";
+import Pagination from "./Pagination";
 
 interface AnswerTabProps {
   userId: string;
@@ -9,7 +10,12 @@ interface AnswerTabProps {
 }
 
 const AnswerTab = async ({ userId, clerkId, searchParams }: AnswerTabProps) => {
-  const result = await getUserAnswers({ userId, page: 1 });
+  const queryObj = await Promise.resolve(searchParams ?? {});
+
+  const result = await getUserAnswers({
+    userId,
+    page: queryObj?.page ? +queryObj.page : 1,
+  });
   return (
     <>
       {result.answers.map((item) => (
@@ -23,6 +29,13 @@ const AnswerTab = async ({ userId, clerkId, searchParams }: AnswerTabProps) => {
           createdAt={item.createdAt}
         />
       ))}
+
+      <div className="mt-10">
+        <Pagination
+          pageNumber={queryObj?.page ? +queryObj.page : 1}
+          isNext={result.isNextAnswers}
+        />
+      </div>
     </>
   );
 };

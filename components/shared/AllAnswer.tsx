@@ -7,6 +7,8 @@ import Image from "next/image";
 import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
+import Pagination from "./Pagination";
+import page from "@/app/(root)/(home)/page";
 
 interface Props {
   userId: string;
@@ -41,7 +43,7 @@ const AllAnswer = async ({
         {result.answers.map((answer) => (
           <article key={answer._id} className="light-border border-b py-10">
             <div className="flex items-center justify-between">
-              <div className="mt-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
+              <div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
                 <Link
                   className="flex flex-1 items-start gap-1 sm:items-center"
                   href={`/profile/${answer.author.clerkId}`}
@@ -63,6 +65,7 @@ const AllAnswer = async ({
                     </p>
                   </div>
                 </Link>
+
                 <div className="flex justify-end">
                   <Votes
                     type="Answer"
@@ -79,6 +82,10 @@ const AllAnswer = async ({
             <ParseHTML data={answer.content} />
           </article>
         ))}
+      </div>
+
+      <div className="mt-10 w-full">
+        <Pagination pageNumber={page ? +page : 1} isNext={result.isNext} />
       </div>
     </div>
   );

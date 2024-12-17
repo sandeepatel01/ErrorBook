@@ -294,6 +294,7 @@ export async function getUserQuestions(params: GetUserStatsParams) {
   try {
     const { userId, page = 1, pageSize = 10 } = params;
 
+    const skipAmount = (page - 1) * pageSize;
     const totalQuestions = await Question.countDocuments({ author: userId });
 
     const userQuestions = await Question.find({ author: userId })
@@ -311,6 +312,8 @@ export async function getUserQuestions(params: GetUserStatsParams) {
         model: Tag,
         select: "_id name",
       })
+      .skip(skipAmount)
+      .limit(pageSize)
       .lean();
 
     // Convert ObjectIds to strings in questions and their nested fields
@@ -327,7 +330,9 @@ export async function getUserQuestions(params: GetUserStatsParams) {
       })),
     }));
 
-    return { totalQuestions, questions };
+    const isNextQuestions = totalQuestions > skipAmount + pageSize;
+
+    return { totalQuestions, questions, isNextQuestions };
   } catch (error) {
     console.log("Error in getting user questions: ", error);
     throw error;
@@ -340,6 +345,7 @@ export async function getUserAnswers(params: GetUserStatsParams) {
   try {
     const { userId, page = 1, pageSize = 10 } = params;
 
+    const skipAmount = (page - 1) * pageSize;
     const totalAnswers = await Answer.countDocuments({ author: userId });
 
     const userAnswers = await Answer.find({ author: userId })
@@ -353,9 +359,13 @@ export async function getUserAnswers(params: GetUserStatsParams) {
         path: "question",
         model: Question,
         select: "_id title author tags",
-      });
+      })
+      .skip(skipAmount)
+      .limit(pageSize);
 
-    return { totalAnswers, answers: userAnswers };
+    const isNextAnswers = totalAnswers > skipAmount + pageSize;
+
+    return { totalAnswers, answers: userAnswers, isNextAnswers };
   } catch (error) {
     console.log("Error in getting user answers: ", error);
     throw error;
