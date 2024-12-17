@@ -176,7 +176,15 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
   await connectToDatabase();
 
   try {
-    const { clerkId, searchQuery, filter } = params;
+    const { clerkId, searchQuery, filter, page = 1, pageSize = 20 } = params;
+
+    if (!clerkId) {
+      throw new Error("Missing clerkId parameter.");
+    }
+
+    // console.log("Finding user with clerkId:", clerkId);
+
+    const skipAmount = (page - 1) * pageSize;
     let sortOptions: { [key: string]: 1 | -1 } = {};
 
     const query: FilterQuery<typeof Question> = searchQuery
@@ -212,7 +220,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
       .populate({
         path: "saved",
         match: query,
-        options: { sort: sortOptions },
+        options: { sort: sortOptions, skip: skipAmount, limit: pageSize + 1 },
         populate: [
           { path: "author", model: User, select: "_id clerkId name picture" },
           { path: "tags", model: Tag, select: "_id name" },
@@ -246,7 +254,9 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
       })),
     }));
 
-    return { questions: savedQuestions }; // Make sure this return statement is here
+    const isNext = user.saved.length > pageSize;
+
+    return { questions: savedQuestions, isNext }; // Make sure this return statement is here
   } catch (error) {
     console.log("Error in getting saved questions: ", error);
     throw error;

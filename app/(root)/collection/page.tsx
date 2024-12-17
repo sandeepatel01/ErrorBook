@@ -6,6 +6,7 @@ import QuestionCard from "@/components/cards/QuestionCard";
 import { getSavedQuestions } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
 import { SearchParamsProps } from "@/types";
+import Pagination from "@/components/shared/Pagination";
 
 export default async function Home({ searchParams }: SearchParamsProps) {
   const queryObj = await Promise.resolve(searchParams ?? {});
@@ -19,6 +20,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
     clerkId: userId,
     searchQuery,
     filter: queryObj.filter || "",
+    page: queryObj?.page ? +queryObj.page : 1,
   });
 
   // console.log("Full Result:", result);
@@ -66,6 +68,13 @@ export default async function Home({ searchParams }: SearchParamsProps) {
             linkTitle="Ask a Question"
           />
         )}
+      </div>
+
+      <div className="mt-10">
+        <Pagination
+          pageNumber={queryObj?.page ? +queryObj.page : 1}
+          isNext={result.isNext}
+        />
       </div>
     </>
   );
