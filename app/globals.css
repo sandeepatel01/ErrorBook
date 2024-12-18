@@ -4,6 +4,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Root variables for light and dark themes */
+:root {
+  --muted: 220, 14%, 96%; /* Muted background (light gray) */
+  --muted-foreground: 220, 14%, 20%; /* Muted foreground (dark gray) */
+  --primary: 24, 100%, 50%; /* Example for primary color */
+  --background: 0, 0%, 100%; /* Default background */
+  --foreground: 0, 0%, 10%; /* Default foreground */
+}
+
+[data-theme="dark"] {
+  --muted: 220, 14%, 20%; /* Muted background (dark gray) */
+  --muted-foreground: 220, 14%, 96%; /* Muted foreground (light gray) */
+  --background: 0, 0%, 10%; /* Dark background */
+  --foreground: 0, 0%, 100%; /* Light text for dark mode */
+}
+
 body {
   font-family: "Inter", sans-serif;
 }
