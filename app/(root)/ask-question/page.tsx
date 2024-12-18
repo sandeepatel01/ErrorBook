@@ -10,7 +10,7 @@ const page = async () => {
 
   if (!userId) {
     redirect("/sign-in");
-    return; // Ensure that the function exits after the redirect
+    return null;
   }
 
   // Fetch user data from the database
@@ -19,8 +19,8 @@ const page = async () => {
   // Handle the case where mongoUser is null or undefined
   if (!mongoUser) {
     console.error("Mongo User not found");
-    redirect("/error"); // Or some appropriate fallback page
-    return; // Exit the function to prevent further execution
+    redirect("/error");
+    return null;
   }
 
   // console.log("Mongo User: ", mongoUser);
