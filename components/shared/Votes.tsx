@@ -1,5 +1,6 @@
 "use client";
 
+import { useToast } from "@/hooks/use-toast";
 import { downvoteAnswer, upvoteAnswer } from "@/lib/actions/answer.action";
 import { viewQuestion } from "@/lib/actions/interaction.action";
 import {
@@ -36,6 +37,8 @@ const Votes = ({
   const pathname = usePathname();
   const router = useRouter();
 
+  const { toast } = useToast();
+
   const [localHasUpvoted, setLocalHasUpvoted] = useState(initialUpvoted);
   const [localHasDownvoted, setLocalHasDownvoted] = useState(initialDownvoted);
 
@@ -45,10 +48,20 @@ const Votes = ({
       userId: JSON.parse(userId),
       path: pathname,
     });
+
+    return toast({
+      title: `Question ${!hasSaved ? "Saved in" : "Removed from"} your collection`,
+      variant: !hasSaved ? "default" : "destructive",
+    });
   };
 
   const handleVote = async (action: string) => {
-    if (!userId) return;
+    if (!userId) {
+      return toast({
+        title: "Please sign in to vote",
+        description: "You need to be signed in to vote on this question",
+      });
+    }
 
     if (action === "upvote") {
       if (type === "Question") {
@@ -71,9 +84,10 @@ const Votes = ({
 
       setLocalHasUpvoted(!localHasUpvoted);
       if (localHasDownvoted) setLocalHasDownvoted(false);
-      return;
-
-      // TODO: show a toast message
+      return toast({
+        title: `Upvote ${!localHasUpvoted ? "Successful" : "Removed"}`,
+        variant: !localHasUpvoted ? "default" : "destructive",
+      });
     }
 
     if (action === "downvote") {
@@ -97,7 +111,10 @@ const Votes = ({
 
       setLocalHasDownvoted(!localHasDownvoted);
       if (localHasUpvoted) setLocalHasUpvoted(false);
-      // TODO: show a toast message
+      return toast({
+        title: `Downvote ${!localHasDownvoted ? "Successful" : "Removed"}`,
+        variant: !localHasDownvoted ? "default" : "destructive",
+      });
     }
   };
 
