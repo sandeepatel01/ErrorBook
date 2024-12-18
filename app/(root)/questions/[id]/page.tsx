@@ -7,19 +7,13 @@ import Votes from "@/components/shared/Votes";
 import { getQuestionById } from "@/lib/actions/question.action";
 import { getUserById } from "@/lib/actions/user.action";
 import { formatNumber, getTimestamp } from "@/lib/utils";
+import { URLProps } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-interface Params {
-  params: {
-    id: string;
-  };
-  searchParams: { [key: string]: string | undefined };
-}
-
-const page = async ({ params, searchParams }: Params) => {
+const page = async ({ params, searchParams }: URLProps) => {
   const resolvedParams = await params;
   const questionId = resolvedParams.id;
 
