@@ -10,7 +10,7 @@ import { Button } from "../ui/button";
 
 const LeftSidebar = () => {
   const { isLoaded, userId } = useAuth();
-  console.log("User Id: ", userId);
+  // console.log("User Id: ", userId);
   const pathname = usePathname();
 
   if (!isLoaded) {
@@ -34,14 +34,6 @@ const LeftSidebar = () => {
           if (item.route === "/profile" && !userId) {
             return null;
           }
-
-          // if (item.route === "/profile") {
-          //   if (userId) {
-          //     item.route = `${item.route}/${userId}`;
-          //   } else {
-          //     return null;
-          //   }
-          // }
 
           return (
             <Link

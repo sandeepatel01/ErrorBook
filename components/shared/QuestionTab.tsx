@@ -31,7 +31,7 @@ const QuestionTab = async ({
           tags={item.tags}
           author={item.author}
           views={item.views}
-          upvotes={item.upvotes}
+          upvotes={item.upvotes.length}
           answers={item.answers}
           createdAt={item.createdAt}
         />

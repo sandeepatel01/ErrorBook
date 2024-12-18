@@ -208,27 +208,3 @@ export async function deleteAnswer(params: DeleteAnswerParams) {
     throw error;
   }
 }
-
-// export async function getAnswers(params: GetAnswersParams) {
-//   await connectToDatabase();
-
-//   try {
-//     const { questionId } = params;
-//     const cleanQuestionId = questionId.replace(/^"|"$/g, ""); // Removes extra quotes
-
-//     if (!mongoose.isValidObjectId(cleanQuestionId)) {
-//       throw new Error("Invalid question ID");
-//     }
-
-//     const answers = await Answer.find({ question: cleanQuestionId })
-//       .populate<{
-//         author: IUser;
-//       }>("author", "_id clerkId name picture")
-//       .sort({ createdAt: -1 });
-
-//     return { answers };
-//   } catch (error) {
-//     console.log("Error in getting answers: ", error);
-//     throw error;
-//   }
-// }

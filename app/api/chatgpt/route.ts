@@ -26,11 +26,11 @@ export const POST = async (req: Request) => {
       }),
     });
 
-    console.log("Response status: ", response.status);
+    // console.log("Response status: ", response.status);
 
     const responseData = await response.json();
-    console.log("Response Data:", responseData);
-    
+    // console.log("Response Data:", responseData);
+
     const reply = responseData.choices[0].message.content;
 
     return NextResponse.json({ reply });

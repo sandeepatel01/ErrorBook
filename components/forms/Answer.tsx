@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Editor } from "@tinymce/tinymce-react";
 import { useTheme } from "@/context/ThemeProvider";
 import { Button } from "../ui/button";
-import Image from "next/image";
+// import Image from "next/image";
 import { createAnswer } from "@/lib/actions/answer.action";
 import { usePathname } from "next/navigation";
 
@@ -28,7 +28,7 @@ interface Props {
 const Answer = ({ question, questionId, authorId }: Props) => {
   const pathname = usePathname();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmittingAI, setIsSubmittingAI] = useState(false);
+  // const [isSubmittingAI, setIsSubmittingAI] = useState(false);
   const editorRef = useRef(null);
   const { mode } = useTheme();
   const form = useForm<z.infer<typeof AnswerSchema>>({
@@ -63,39 +63,41 @@ const Answer = ({ question, questionId, authorId }: Props) => {
     }
   };
 
-  const generateAIAnswer = async () => {
-    if (!authorId) return;
+  // TODO: Generate AI Answer
 
-    setIsSubmittingAI(true);
+  // const generateAIAnswer = async () => {
+  //   if (!authorId) return;
 
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            question,
-          }),
-        },
-      );
+  //   setIsSubmittingAI(true);
 
-      const aiAnswer = await response.json();
+  //   try {
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`,
+  //       {
+  //         method: "POST",
+  //         body: JSON.stringify({
+  //           question,
+  //         }),
+  //       },
+  //     );
 
-      const formatedAnswer = aiAnswer.reply.replace(/\n/g, "<br />");
+  //     const aiAnswer = await response.json();
 
-      if (editorRef.current) {
-        const editor = editorRef.current as any;
-        editor.setContent(formatedAnswer);
-      }
+  //     const formatedAnswer = aiAnswer.reply.replace(/\n/g, "<br />");
 
-      // alert(aiAnswer.reply);
-    } catch (error) {
-      console.log("Error generating AI answer: ", error);
-      throw error;
-    } finally {
-      setIsSubmittingAI(false);
-    }
-  };
+  //     if (editorRef.current) {
+  //       const editor = editorRef.current as any;
+  //       editor.setContent(formatedAnswer);
+  //     }
+
+  //     // alert(aiAnswer.reply);
+  //   } catch (error) {
+  //     console.log("Error generating AI answer: ", error);
+  //     throw error;
+  //   } finally {
+  //     setIsSubmittingAI(false);
+  //   }
+  // };
 
   return (
     <div>
@@ -103,7 +105,10 @@ const Answer = ({ question, questionId, authorId }: Props) => {
         <h4 className="paragraph-semibold text-dark400_light800">
           Write Your Answer Here
         </h4>
-        <Button
+
+        {/* TODO: Generate AI Answer */}
+
+        {/* <Button
           className="btn light-border-2 gap-1.5 rounded-xl px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500"
           onClick={generateAIAnswer}
         >
@@ -121,7 +126,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
               Generate an AI Answer
             </>
           )}
-        </Button>
+        </Button> */}
       </div>
 
       <Form {...form}>
