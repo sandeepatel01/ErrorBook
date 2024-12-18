@@ -12,11 +12,16 @@ import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
 import QuestionTab from "@/components/shared/QuestionTab";
 import AnswerTab from "@/components/shared/AnswerTab";
+// import Loading from "./loading";
 
 const page = async ({ params, searchParams }: URLProps) => {
   const { id } = await params;
   const { userId: clerkId } = await auth();
   const userInfo = await getUserInfo({ userId: id });
+
+  // const isLoading = true;
+
+  // if (isLoading) return <Loading />;
 
   return (
     <>
