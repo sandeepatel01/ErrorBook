@@ -9,7 +9,7 @@ const connection: connectionObject = {
   isConnected: false,
 };
 
-export const connectToDatabase = async () => {
+export const connectToDatabase = async (retries = 5) => {
   mongoose.set("strictQuery", true);
 
   if (!process.env.MONGODB_URI) {
@@ -34,6 +34,11 @@ export const connectToDatabase = async () => {
     }
   } catch (error) {
     console.log("DB Connection Failed: ", error);
-    process.exit(1);
+    if (retries > 0) {
+      console.log(`Retrying connection... (${retries} retries left)`);
+      setTimeout(() => connectToDatabase(retries - 1), 5000);
+    } else {
+      process.exit(1);
+    }
   }
 };
