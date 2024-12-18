@@ -10,6 +10,14 @@ import { getQuestions } from "@/lib/actions/question.action";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home | ErrorBook",
+  description:
+    "ErrorBook is a community of developers to ask and answer questions. Join the community now!",
+};
+
 export default async function Home({ searchParams }: SearchParamsProps) {
   const queryObj = await Promise.resolve(searchParams ?? {});
   const searchQuery = queryObj.q || "";

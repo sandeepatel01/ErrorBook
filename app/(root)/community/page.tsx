@@ -8,6 +8,12 @@ import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 import React from "react";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Community | ErrorBook",
+};
+
 const Page = async ({ searchParams }: SearchParamsProps) => {
   const queryObj = await Promise.resolve(searchParams ?? {});
   const searchQuery = queryObj.q || "";

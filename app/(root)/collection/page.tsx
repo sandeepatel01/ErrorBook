@@ -8,6 +8,12 @@ import { auth } from "@clerk/nextjs/server";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Collection | ErrorBook",
+};
+
 export default async function Home({ searchParams }: SearchParamsProps) {
   const queryObj = await Promise.resolve(searchParams ?? {});
   const searchQuery = queryObj.q || "";
