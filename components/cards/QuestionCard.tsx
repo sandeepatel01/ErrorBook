@@ -79,28 +79,29 @@ const QuestionCard = ({
           isAuthor
           textStyle="body-medium text-dark400_light700"
         />
-
-        <Metrix
-          imgUrl="/assets/icons/like.svg"
-          alt="Upvotes"
-          value={formatNumber(upvotes)}
-          title=" Votes"
-          textStyle="small-medium text-dark400_light800"
-        />
-        <Metrix
-          imgUrl="/assets/icons/message.svg"
-          alt="message"
-          value={formatNumber(answers.length)}
-          title=" Answers"
-          textStyle="small-medium text-dark400_light800"
-        />
-        <Metrix
-          imgUrl="/assets/icons/eye.svg"
-          alt="eye"
-          value={formatNumber(views)}
-          title=" Views"
-          textStyle="small-medium text-dark400_light800"
-        />
+        <div className="flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start">
+          <Metrix
+            imgUrl="/assets/icons/like.svg"
+            alt="Upvotes"
+            value={formatNumber(upvotes)}
+            title=" Votes"
+            textStyle="small-medium text-dark400_light800"
+          />
+          <Metrix
+            imgUrl="/assets/icons/message.svg"
+            alt="message"
+            value={formatNumber(answers.length)}
+            title=" Answers"
+            textStyle="small-medium text-dark400_light800"
+          />
+          <Metrix
+            imgUrl="/assets/icons/eye.svg"
+            alt="eye"
+            value={formatNumber(views)}
+            title=" Views"
+            textStyle="small-medium text-dark400_light800"
+          />
+        </div>
       </div>
     </div>
   );
