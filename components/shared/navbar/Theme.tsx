@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTheme } from "@/context/ThemeProvider";
 import {
   Menubar,
@@ -14,6 +14,17 @@ import { themes } from "@/constants/constants";
 
 const Theme = () => {
   const { mode, setMode } = useTheme();
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <Menubar className="relative border-none bg-transparent shadow-none">
       <MenubarMenu>
