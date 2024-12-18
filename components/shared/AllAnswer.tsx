@@ -8,7 +8,6 @@ import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
 import Pagination from "./Pagination";
-import page from "@/app/(root)/(home)/page";
 
 interface Props {
   userId: string;
@@ -17,7 +16,6 @@ interface Props {
   page?: string;
   filter?: string;
 }
-
 const AllAnswer = async ({
   userId,
   questionId,
