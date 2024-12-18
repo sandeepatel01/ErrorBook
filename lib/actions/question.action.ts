@@ -10,6 +10,7 @@ import {
   GetQuestionByIdParams,
   GetQuestionsParams,
   QuestionVoteParams,
+  RecommendedParams,
 } from "./shared.types";
 import User, { IUser } from "@/models/user.model";
 import { revalidatePath } from "next/cache";
@@ -364,6 +365,73 @@ export async function getHotQuestions() {
     return plainQuestions;
   } catch (error) {
     console.log("Error in getting hot questions:", error);
+    throw error;
+  }
+}
+
+export async function getRecomendedQuestions(params: RecommendedParams) {
+  await connectToDatabase();
+
+  try {
+    const { userId, page = 1, pageSize = 20, searchQuery } = params;
+
+    const user = await User.findOne({ clerkId: userId });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const skipAmount = (page - 1) * pageSize;
+
+    const userInteractions = await Interaction.find({ user: user._id });
+
+    const userTags = userInteractions.reduce((tags, interaction) => {
+      if (interaction.tags) {
+        tags = tags.concat(interaction.tags);
+      }
+
+      return tags;
+    }, []);
+
+    const distinctUserTagIds = [
+      ...new Set(userTags.map((tag: any) => tag._id)),
+    ];
+
+    const query: FilterQuery<typeof Question> = {
+      $and: [
+        { tags: { $in: distinctUserTagIds } },
+        { auther: { $ne: user._id } },
+      ],
+    };
+
+    if (searchQuery) {
+      query.$or = [
+        { title: { $regex: searchQuery, $options: "i" } },
+        { content: { $regex: searchQuery, $options: "i" } },
+      ];
+    }
+
+    const totalQuestions = await Question.countDocuments(query);
+
+    const recommendedQuestions = await Question.find(query)
+      .populate<{ tags: ITag[]; author: IUser }>({
+        path: "tags",
+        model: Tag,
+        select: "_id name",
+      })
+      .populate<{ tags: ITag[]; author: IUser }>({
+        path: "author",
+        model: User,
+        select: "_id name picture",
+      })
+      .skip(skipAmount)
+      .limit(pageSize);
+
+    const isNext = totalQuestions > skipAmount + recommendedQuestions.length;
+
+    return { questions: recommendedQuestions, isNext };
+  } catch (error) {
+    console.log("Error in getting recommended questions:", error);
     throw error;
   }
 }

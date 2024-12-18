@@ -6,11 +6,15 @@ import { HomePageFilters } from "@/constants/filters";
 import HomeFilters from "@/components/home/HomeFilters";
 import NoResult from "@/components/shared/NoResult";
 import QuestionCard from "@/components/cards/QuestionCard";
-import { getQuestions } from "@/lib/actions/question.action";
+import {
+  getQuestions,
+  getRecomendedQuestions,
+} from "@/lib/actions/question.action";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 
 import type { Metadata } from "next";
+import { auth } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {
   title: "Home | ErrorBook",
@@ -19,16 +23,35 @@ export const metadata: Metadata = {
 };
 
 export default async function Home({ searchParams }: SearchParamsProps) {
+  const { userId } = await auth();
+
   const queryObj = await Promise.resolve(searchParams ?? {});
   const searchQuery = queryObj.q || "";
 
   // console.log("Search query: ", searchQuery);
 
-  const result = await getQuestions({
-    searchQuery,
-    filter: queryObj.filter || "",
-    page: queryObj?.page ? +queryObj.page : 1,
-  });
+  let result;
+
+  if (queryObj?.filter === "recommended") {
+    if (userId) {
+      result = await getRecomendedQuestions({
+        userId,
+        searchQuery,
+        page: queryObj?.page ? +queryObj.page : 1,
+      });
+    } else {
+      result = {
+        questions: [],
+        isNext: false,
+      };
+    }
+  } else {
+    result = await getQuestions({
+      searchQuery,
+      filter: queryObj.filter || "",
+      page: queryObj?.page ? +queryObj.page : 1,
+    });
+  }
 
   const questions = result?.questions || [];
 
