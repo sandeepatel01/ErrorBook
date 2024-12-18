@@ -25,7 +25,8 @@ export const metadata: Metadata = {
 export default async function Home({ searchParams }: SearchParamsProps) {
   const { userId } = await auth();
 
-  const queryObj = await Promise.resolve(searchParams ?? {});
+  // const queryObj = await Promise.resolve(searchParams ?? {});
+  const queryObj = (await searchParams) || {};
   const searchQuery = queryObj.q || "";
 
   // console.log("Search query: ", searchQuery);
