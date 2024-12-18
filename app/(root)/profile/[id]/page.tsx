@@ -15,10 +15,14 @@ import AnswerTab from "@/components/shared/AnswerTab";
 // import Loading from "./loading";
 
 const page = async ({ params, searchParams }: URLProps) => {
-  // const { id } = params;
+  if (!params) {
+    return <div>Error: No user found</div>;
+  }
 
   const resolvedParams = await params;
   const { id } = resolvedParams;
+
+  const queryObj = (await searchParams) || {};
 
   const { userId: clerkId } = await auth();
   const userInfo = await getUserInfo({ userId: id });
@@ -108,14 +112,14 @@ const page = async ({ params, searchParams }: URLProps) => {
             className="mt-5 flex w-full flex-col gap-6"
           >
             <QuestionTab
-              searchParams={searchParams}
+              searchParams={queryObj}
               userId={userInfo?.user._id}
               clerkId={clerkId}
             />
           </TabsContent>
           <TabsContent value="answers" className="flex w-full flex-col gap-6">
             <AnswerTab
-              searchParams={searchParams}
+              searchParams={queryObj}
               userId={userInfo?.user._id}
               clerkId={clerkId}
             />

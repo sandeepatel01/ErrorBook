@@ -30,7 +30,7 @@ export interface SearchParamsProps {
 }
 export interface URLProps {
   params: Promise<{ id: string }>; // Promise type
-  searchParams: { [key: string]: string | undefined };
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 export interface BadgeCounts {
   GOLD: number;
