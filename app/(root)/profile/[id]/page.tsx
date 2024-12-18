@@ -15,7 +15,15 @@ import AnswerTab from "@/components/shared/AnswerTab";
 // import Loading from "./loading";
 
 const page = async ({ params, searchParams }: URLProps) => {
-  const { id } = await params;
+  if (!params) {
+    return <div>Error: No user found</div>;
+  }
+
+  const { id } = params;
+
+  // const resolvedParams = await params;
+  // const { id } = resolvedParams;
+
   const { userId: clerkId } = await auth();
   const userInfo = await getUserInfo({ userId: id });
 
