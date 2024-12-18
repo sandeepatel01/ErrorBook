@@ -81,7 +81,14 @@ const Answer = ({ question, questionId, authorId }: Props) => {
 
       const aiAnswer = await response.json();
 
-      alert(aiAnswer.reply);
+      const formatedAnswer = aiAnswer.reply.replace(/\n/g, "<br />");
+
+      if (editorRef.current) {
+        const editor = editorRef.current as any;
+        editor.setContent(formatedAnswer);
+      }
+
+      // alert(aiAnswer.reply);
     } catch (error) {
       console.log("Error generating AI answer: ", error);
       throw error;
@@ -100,14 +107,20 @@ const Answer = ({ question, questionId, authorId }: Props) => {
           className="btn light-border-2 gap-1.5 rounded-xl px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500"
           onClick={generateAIAnswer}
         >
-          <Image
-            src="/assets/icons/stars.svg"
-            width={12}
-            height={12}
-            alt="stars"
-            className="object-contain"
-          />
-          Generate an AI Answer
+          {isSubmittingAI ? (
+            <>Generating...</>
+          ) : (
+            <>
+              <Image
+                src="/assets/icons/stars.svg"
+                width={12}
+                height={12}
+                alt="stars"
+                className="object-contain"
+              />
+              Generate an AI Answer
+            </>
+          )}
         </Button>
       </div>
 
