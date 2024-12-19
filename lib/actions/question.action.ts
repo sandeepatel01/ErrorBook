@@ -58,18 +58,6 @@ export async function getQuestions(params: GetQuestionsParams) {
         break;
     }
 
-    // const query: FilterQuery<typeof Question> = searchQuery
-    //   ? {
-    //       $or: [
-    //         { title: { $regex: searchQuery, $options: "i" } }, // Correct Regex usage
-    //         { content: { $regex: searchQuery, $options: "i" } },
-    //       ],
-    //     }
-    //   : {};
-
-    // console.log("MongoDB Query:", query);
-    // console.log("MongoDB Query:", JSON.stringify(query, null, 2));
-
     const questions = await Question.find(query)
       .populate<{ tags: ITag[]; author: IUser }>({
         path: "tags",
@@ -95,11 +83,11 @@ export async function getQuestions(params: GetQuestionsParams) {
       _id: question._id.toString(),
       title: question.title,
       tags: question.tags.map((tag) => ({
-        _id: tag._id.toString(), // Directly use the fields from ITag
+        _id: tag._id.toString(),
         name: tag.name,
       })),
       author: {
-        _id: question.author._id.toString(), // Directly use the fields from IUser
+        _id: question.author._id.toString(),
         name: question.author.name,
         picture: question.author.picture,
       },
@@ -109,7 +97,10 @@ export async function getQuestions(params: GetQuestionsParams) {
       createdAt: question.createdAt.toISOString(),
     }));
 
-    return { questions: serializedQuestions, isNext };
+    return {
+      questions: JSON.parse(JSON.stringify(serializedQuestions)),
+      isNext,
+    };
   } catch (error) {
     console.log("Error in getting questions:", error);
     throw error;
@@ -430,20 +421,25 @@ export async function getRecomendedQuestions(params: RecommendedParams) {
 
     const formattedQuestions = recommendedQuestions.map((question) => ({
       ...question,
+      _id: question._id.toString(),
       tags: question.tags.map((tag) => ({
-        ...tag,
         _id: tag._id.toString(),
+        name: tag.name,
       })),
       author: {
-        ...question.author,
         _id: question.author._id.toString(),
+        name: question.author.name,
+        picture: question.author.picture,
       },
-      _id: question._id.toString(),
+      createdAt: question.createdAt.toISOString(),
     }));
 
     const isNext = totalQuestions > skipAmount + formattedQuestions.length;
 
-    return { questions: formattedQuestions, isNext };
+    return {
+      questions: JSON.parse(JSON.stringify(formattedQuestions)),
+      isNext,
+    };
   } catch (error) {
     console.log("Error in getting recommended questions:", error);
     throw error;

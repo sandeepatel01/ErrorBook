@@ -1,14 +1,14 @@
-// import Answer from "@/components/forms/Answer";
-// import AllAnswer from "@/components/shared/AllAnswer";
-// import Metrix from "@/components/shared/Metrix";
-// import ParseHTML from "@/components/shared/ParseHTML";
-// import RenderTags from "@/components/shared/RenderTags";
-// import Votes from "@/components/shared/Votes";
+import Answer from "@/components/forms/Answer";
+import AllAnswer from "@/components/shared/AllAnswer";
+import Metrix from "@/components/shared/Metrix";
+import ParseHTML from "@/components/shared/ParseHTML";
+import RenderTags from "@/components/shared/RenderTags";
+import Votes from "@/components/shared/Votes";
 import { getQuestionById } from "@/lib/actions/question.action";
-// import { getUserById } from "@/lib/actions/user.action";
-// import { formatNumber, getTimestamp } from "@/lib/utils";
+import { getUserById } from "@/lib/actions/user.action";
+import { formatNumber, getTimestamp } from "@/lib/utils";
 import { URLProps } from "@/types";
-// import { auth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -17,18 +17,18 @@ const page = async ({ params, searchParams }: URLProps) => {
   const resolvedParams = await params;
   const questionId = resolvedParams.id;
 
-  // const queryObj = await Promise.resolve(searchParams ?? {});
+  const queryObj = await Promise.resolve(searchParams ?? {});
 
   // console.log("Resolved Params:", resolvedParams);
 
   const result = await getQuestionById({ questionId });
-  // const { userId: clerkId } = await auth();
+  const { userId: clerkId } = await auth();
 
-  // let mongoUser;
+  let mongoUser;
 
-  // if (clerkId) {
-  //   mongoUser = await getUserById({ userId: clerkId });
-  // }
+  if (clerkId) {
+    mongoUser = await getUserById({ userId: clerkId });
+  }
 
   if (!result) {
     return <div>Question not found</div>;
@@ -37,7 +37,6 @@ const page = async ({ params, searchParams }: URLProps) => {
   return (
     <>
       <div className="flex-start w-full flex-col">
-
         <div className="flex w-full flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
           <Link
             href={`/profile/${result.author.clerkId}`}
@@ -55,7 +54,7 @@ const page = async ({ params, searchParams }: URLProps) => {
             </p>
           </Link>
           <div className="flex justify-end">
-            {/* <Votes
+            <Votes
               type="Question"
               itemId={JSON.stringify(result._id)}
               userId={JSON.stringify(mongoUser._id)}
@@ -64,7 +63,7 @@ const page = async ({ params, searchParams }: URLProps) => {
               downvotes={result.downvotes.length}
               hasdownVoted={result.downvotes.includes(mongoUser._id)}
               hasSaved={mongoUser?.saved.includes(result._id)}
-            /> */}
+            />
           </div>
         </div>
         <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">
@@ -73,32 +72,32 @@ const page = async ({ params, searchParams }: URLProps) => {
       </div>
 
       <div className="mb-8 mt-5 flex flex-wrap gap-4">
-        {/* <Metrix
+        <Metrix
           imgUrl="/assets/icons/clock.svg"
           alt="clock icon"
           value={getTimestamp(result.createdAt)}
           title=" Asked"
           textStyle="small-medium text-dark400_light800"
-        /> */}
-        {/* <Metrix
+        />
+        <Metrix
           imgUrl="/assets/icons/message.svg"
           alt="message"
           value={formatNumber(result.answers.length)}
           title=" Answers"
           textStyle="small-medium text-dark400_light800"
-        /> */}
-        {/* <Metrix
+        />
+        <Metrix
           imgUrl="/assets/icons/eye.svg"
           alt="eye"
           value={formatNumber(result.views)}
           title=" Views"
           textStyle="small-medium text-dark400_light800"
-        /> */}
+        />
       </div>
 
-      {/* <ParseHTML data={result.content} /> */}
+      <ParseHTML data={result.content} />
 
-      {/* <div className="mt-8 flex flex-wrap gap-2">
+      <div className="mt-8 flex flex-wrap gap-2">
         {result.tags.map((tag) => (
           <RenderTags
             key={tag._id.toString()}
@@ -107,21 +106,21 @@ const page = async ({ params, searchParams }: URLProps) => {
             showCount={false}
           />
         ))}
-      </div> */}
+      </div>
 
-      {/* <AllAnswer
+      <AllAnswer
         questionId={result._id.toString()}
         userId={mongoUser?._id}
         totalAnswers={result.answers.length}
         page={queryObj?.page}
         filter={queryObj?.filter}
-      /> */}
+      />
 
-      {/* <Answer
+      <Answer
         question={result.content}
         questionId={JSON.stringify(result._id)}
         authorId={JSON.stringify(mongoUser?._id)}
-      /> */}
+      />
     </>
   );
 };

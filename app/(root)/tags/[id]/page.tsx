@@ -1,7 +1,7 @@
-// import QuestionCard from "@/components/cards/QuestionCard";
-// import NoResult from "@/components/shared/NoResult";
-// import Pagination from "@/components/shared/Pagination";
-// import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
+import QuestionCard from "@/components/cards/QuestionCard";
+import NoResult from "@/components/shared/NoResult";
+import Pagination from "@/components/shared/Pagination";
+import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { getQuestionsByTagId } from "@/lib/actions/tag.action";
 import { URLProps } from "@/types";
 import React from "react";
@@ -20,55 +20,54 @@ const page = async ({ params, searchParams }: URLProps) => {
     page: queryObj?.page ? +queryObj.page : 1,
   });
 
+  // Convert result to a plain object
+  const plainResult = JSON.parse(JSON.stringify(result));
+
   return (
     <>
-      <h1 className="h1-bold text-dark100_light900">{result.tagTitle}</h1>
+      <h1 className="h1-bold text-dark100_light900">{plainResult.tagTitle}</h1>
 
       <div className="mt-11 w-full">
-        {/* <LocalSearchbar
+        <LocalSearchbar
           route={`/tags/${id}`}
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           placeholder="Search  tag questions..."
           otherClasses="flex-1"
-        /> */}
+        />
       </div>
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {result.questions.length > 0 ? (
-          result.questions.map((question: any) => (
-            // <QuestionCard
-            //   key={question._id}
-            //   _id={question._id}
-            //   title={question.title}
-            //   tags={question.tags}
-            //   author={question.author}
-            //   views={question.views}
-            //   upvotes={question.upvotes}
-            //   answers={question.answers}
-            //   createdAt={question.createdAt}
-            // />
-            <h1 className="h1-bold text-dark100_light900" key={question._id}>
-              My Question
-            </h1>
+        {plainResult.questions.length > 0 ? (
+          plainResult.questions.map((question: any) => (
+            <QuestionCard
+              key={question._id}
+              _id={question._id}
+              title={question.title}
+              tags={question.tags}
+              author={question.author}
+              views={question.views}
+              upvotes={question.upvotes.length}
+              answers={question.answers}
+              createdAt={question.createdAt}
+            />
           ))
         ) : (
-          // <NoResult
-          //   title="There's no tag question saved to show"
-          //   description="Be the first to ask a question"
-          //   link="/ask-question"
-          //   linkTitle="Ask a Question"
-          // />
-          <h1 className="h1-bold text-dark100_light900">No Question</h1>
+          <NoResult
+            title="There's no tag question saved to show"
+            description="Be the first to ask a question"
+            link="/ask-question"
+            linkTitle="Ask a Question"
+          />
         )}
       </div>
 
-      {/* <div className="mt-10">
+      <div className="mt-10">
         <Pagination
           pageNumber={queryObj?.page ? +queryObj.page : 1}
           isNext={result.isNext}
         />
-      </div> */}
+      </div>
     </>
   );
 };

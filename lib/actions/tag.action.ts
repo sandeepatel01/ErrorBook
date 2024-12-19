@@ -123,33 +123,43 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
       throw new Error("Tag not found");
     }
 
-    // TypeScript ko `tag` ke type ka pata chalne dena
+    // // TypeScript ko `tag` ke type ka pata chalne dena
     if (Array.isArray(tag)) {
       throw new Error("Tag not found");
     }
 
-    // const questions = tag.questions;
+    const questions = tag.questions;
 
-    // Convert the questions and their authors/tags to plain objects
-    const questions = tag.questions.map((question: any) => {
-      // Convert _id to string
-      question._id = question._id.toString();
+    // Convert the questions to plain objects using .map() and handle nested fields
+    // const questions = tag.questions.map((question: any) => {
+    //   // Convert the question and subfields to plain objects
+    //   const plainQuestion = question.toObject ? question.toObject() : question;
 
-      // Convert author ObjectId to string
-      if (question.author && question.author._id) {
-        question.author._id = question.author._id.toString();
-      }
+    //   // Convert ObjectId to string if needed
+    //   plainQuestion._id = plainQuestion._id.toString();
 
-      // Convert tags to strings
-      if (Array.isArray(question.tags)) {
-        question.tags = question.tags.map((tag: any) => ({
-          _id: tag._id.toString(),
-          name: tag.name,
-        }));
-      }
+    //   if (plainQuestion.author && plainQuestion.author._id) {
+    //     plainQuestion.author._id = plainQuestion.author._id.toString();
+    //   }
 
-      return question;
-    });
+    //   if (Array.isArray(plainQuestion.tags)) {
+    //     plainQuestion.tags = plainQuestion.tags.map((tag: any) => ({
+    //       _id: tag._id.toString(),
+    //       name: tag.name,
+    //     }));
+    //   }
+
+    //   if (plainQuestion.createdAt instanceof Date) {
+    //     plainQuestion.createdAt = plainQuestion.createdAt.toISOString();
+    //   }
+
+    //   // Manually convert Buffer fields to strings (if any)
+    //   if (Buffer.isBuffer(plainQuestion.someField)) {
+    //     plainQuestion.someField = plainQuestion.someField.toString("utf-8");
+    //   }
+
+    //   return plainQuestion;
+    // });
 
     const isNext = tag.questions.length > pageSize;
 

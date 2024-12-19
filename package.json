@@ -23,6 +23,7 @@
     "@tinymce/tinymce-react": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "flatted": "^3.3.2",
     "html-react-parser": "^5.2.0",
     "lucide-react": "^0.460.0",
     "mongoose": "^8.8.3",

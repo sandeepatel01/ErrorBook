@@ -1,22 +1,22 @@
-// import Filter from "@/components/shared/Filter";
-// import NoResult from "@/components/shared/NoResult";
-// import Pagination from "@/components/shared/Pagination";
+import Filter from "@/components/shared/Filter";
+import NoResult from "@/components/shared/NoResult";
+import Pagination from "@/components/shared/Pagination";
 
-// import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
-// import { TagFilters } from "@/constants/filters";
-// import { getAllTags } from "@/lib/actions/tag.action";
+import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
+import { TagFilters } from "@/constants/filters";
+import { getAllTags } from "@/lib/actions/tag.action";
 import { SearchParamsProps } from "@/types";
-// import Link from "next/link";
+import Link from "next/link";
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
-  // const queryObj = await Promise.resolve(searchParams ?? {});
-  // const searchQuery = queryObj.q || "";
+  const queryObj = await Promise.resolve(searchParams ?? {});
+  const searchQuery = queryObj.q || "";
 
-  // const result = await getAllTags({
-  //   searchQuery,
-  //   filter: queryObj.filter || "",
-  //   page: queryObj?.page ? +queryObj.page : 1,
-  // });
+  const result = await getAllTags({
+    searchQuery,
+    filter: queryObj.filter || "",
+    page: queryObj?.page ? +queryObj.page : 1,
+  });
 
   // console.log("result", result);
 
@@ -26,20 +26,20 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
         <h1 className="h1-bold text-dark100_light900">All Tags</h1>
       </div>
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
-        {/* <LocalSearchbar
+        <LocalSearchbar
           route="/tags"
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           placeholder="Search  for tags..."
           otherClasses="flex-1"
-        /> */}
+        />
 
-        {/* <Filter
+        <Filter
           filters={TagFilters}
           otherClasses="min-h-[56px] sm:min-w[170px] "
-        /> */}
+        />
       </div>
-      {/* 
+
       <section className="mt-12 flex flex-wrap gap-4">
         {result.tags.length > 0 ? (
           result.tags.map((tag) => (
@@ -71,14 +71,14 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
             linkTitle="Ask a Question"
           />
         )}
-      </section> */}
+      </section>
 
-      {/* <div className="mt-10">
+      <div className="mt-10">
         <Pagination
           pageNumber={queryObj?.page ? +queryObj.page : 1}
           isNext={result.isNext}
         />
-      </div> */}
+      </div>
     </>
   );
 };

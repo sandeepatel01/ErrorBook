@@ -1,11 +1,11 @@
-// import UserCard from "@/components/cards/UserCard";
-// import Filter from "@/components/shared/Filter";
-// import Pagination from "@/components/shared/Pagination";
-// import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
-// import { UserFilters } from "@/constants/filters";
-// import { getAllUsers } from "@/lib/actions/user.action";
+import UserCard from "@/components/cards/UserCard";
+import Filter from "@/components/shared/Filter";
+import Pagination from "@/components/shared/Pagination";
+import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
+import { UserFilters } from "@/constants/filters";
+import { getAllUsers } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
-// import Link from "next/link";
+import Link from "next/link";
 import React from "react";
 
 import type { Metadata } from "next";
@@ -15,14 +15,14 @@ export const metadata: Metadata = {
 };
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
-  // const queryObj = await Promise.resolve(searchParams ?? {});
-  // const searchQuery = queryObj.q || "";
+  const queryObj = await Promise.resolve(searchParams ?? {});
+  const searchQuery = queryObj.q || "";
 
-  // const result = await getAllUsers({
-  //   searchQuery,
-  //   filter: queryObj.filter || "",
-  //   page: queryObj?.page ? +queryObj.page : 1,
-  // });
+  const result = await getAllUsers({
+    searchQuery,
+    filter: queryObj.filter || "",
+    page: queryObj?.page ? +queryObj.page : 1,
+  });
 
   return (
     <>
@@ -30,21 +30,21 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
         <h1 className="h1-bold text-dark100_light900">All Users</h1>
       </div>
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
-        {/* <LocalSearchbar
+        <LocalSearchbar
           route="/community"
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           placeholder="Search  for amazing developers..."
           otherClasses="flex-1"
-        /> */}
+        />
 
-        {/* <Filter
+        <Filter
           filters={UserFilters}
           otherClasses="min-h-[56px] sm:min-w[170px] "
-        /> */}
+        />
       </div>
 
-      {/* <section className="mt-12 flex flex-wrap gap-4">
+      <section className="mt-12 flex flex-wrap gap-4">
         {result.users.length > 0 ? (
           result.users.map((user) => <UserCard key={user._id} user={user} />)
         ) : (
@@ -55,14 +55,14 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
             </Link>
           </div>
         )}
-      </section> */}
+      </section>
 
-      {/* <div className="mt-10">
+      <div className="mt-10">
         <Pagination
           pageNumber={queryObj?.page ? +queryObj.page : 1}
           isNext={result.isNext}
         />
-      </div> */}
+      </div>
     </>
   );
 };

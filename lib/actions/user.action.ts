@@ -20,6 +20,7 @@ import Tag from "@/models/tag.model";
 import Answer from "@/models/answer.model";
 import { BadgeCriteriaType } from "@/types";
 import { assignBadges } from "../utils";
+// import { stringify } from "flatted";
 
 export async function getUserById(params: MongoUserParams) {
   await connectToDatabase();
@@ -248,7 +249,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
     // Map saved questions to convert _id (Buffer) to string
     const savedQuestions = user.saved.map((question: any) => ({
       ...question,
-      _id: question._id.toString(), // Convert _id to string
+      _id: question._id.toString(), // Convert `_id` to string
       author: question.author
         ? {
             ...question.author,
@@ -256,14 +257,21 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
           }
         : null,
       tags: question.tags.map((tag: any) => ({
-        _id: tag._id.toString(), // Include both _id and name
+        _id: tag._id.toString(),
         name: tag.name,
       })),
+      createdAt: question.createdAt ? question.createdAt.toISOString() : null, // Handle Date to string
+      updatedAt: question.updatedAt ? question.updatedAt.toISOString() : null, // Handle Date to string
     }));
 
     const isNext = user.saved.length > pageSize;
 
-    return { questions: savedQuestions, isNext }; // Make sure this return statement is here
+    // Remove any extra fields that may cause issues
+    const cleanedQuestions = savedQuestions
+      .slice(0, pageSize)
+      .map((q: any) => JSON.parse(JSON.stringify(q)));
+
+    return { questions: cleanedQuestions, isNext }; // Make sure this return statement is here
   } catch (error) {
     console.log("Error in getting saved questions: ", error);
     throw error;
@@ -393,20 +401,27 @@ export async function getUserQuestions(params: GetUserStatsParams) {
     // Convert ObjectIds to strings in questions and their nested fields
     const questions = userQuestions.map((question: any) => ({
       ...question,
-      _id: question._id.toString(), // Convert _id to string
+      _id: question._id.toString(),
       author: {
         ...question.author,
-        _id: question.author._id.toString(), // Convert author _id to string
+        _id: question.author._id.toString(),
       },
       tags: question.tags.map((tag: any) => ({
         ...tag,
-        _id: tag._id.toString(), // Convert tag _id to string
+        _id: tag._id.toString(),
+      })),
+      answers: question.answers.map((answer: any) => ({
+        ...answer,
+        _id: answer._id.toString(),
       })),
     }));
 
+    // Convert to plain objects
+    const plainQuestions = JSON.parse(JSON.stringify(questions));
+
     const isNextQuestions = totalQuestions > skipAmount + pageSize;
 
-    return { totalQuestions, questions, isNextQuestions };
+    return { totalQuestions, questions: plainQuestions, isNextQuestions };
   } catch (error) {
     console.log("Error in getting user questions: ", error);
     throw error;
@@ -432,14 +447,32 @@ export async function getUserAnswers(params: GetUserStatsParams) {
       .populate({
         path: "question",
         model: Question,
-        select: "_id title author tags",
+        select: "_id title tags",
       })
       .skip(skipAmount)
-      .limit(pageSize);
+      .limit(pageSize)
+      .lean();
+
+    // Convert ObjectIds and remove cyclic references
+    const answers = userAnswers.map((answer: any) => ({
+      ...answer,
+      _id: answer._id.toString(),
+      author: {
+        ...answer.author,
+        _id: answer.author._id.toString(),
+      },
+      question: {
+        ...answer.question,
+        _id: answer.question._id.toString(),
+        tags: answer.question.tags.map((tag: any) =>
+          typeof tag === "object" ? tag._id.toString() : tag,
+        ),
+      },
+    }));
 
     const isNextAnswers = totalAnswers > skipAmount + pageSize;
 
-    return { totalAnswers, answers: userAnswers, isNextAnswers };
+    return { totalAnswers, answers, isNextAnswers };
   } catch (error) {
     console.log("Error in getting user answers: ", error);
     throw error;
