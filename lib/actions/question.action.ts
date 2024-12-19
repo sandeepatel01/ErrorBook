@@ -425,11 +425,25 @@ export async function getRecomendedQuestions(params: RecommendedParams) {
         select: "_id name picture",
       })
       .skip(skipAmount)
-      .limit(pageSize);
+      .limit(pageSize)
+      .lean();
 
-    const isNext = totalQuestions > skipAmount + recommendedQuestions.length;
+    const formattedQuestions = recommendedQuestions.map((question) => ({
+      ...question,
+      tags: question.tags.map((tag) => ({
+        ...tag,
+        _id: tag._id.toString(),
+      })),
+      author: {
+        ...question.author,
+        _id: question.author._id.toString(),
+      },
+      _id: question._id.toString(),
+    }));
 
-    return { questions: recommendedQuestions, isNext };
+    const isNext = totalQuestions > skipAmount + formattedQuestions.length;
+
+    return { questions: formattedQuestions, isNext };
   } catch (error) {
     console.log("Error in getting recommended questions:", error);
     throw error;

@@ -56,8 +56,6 @@ export default async function Home({ searchParams }: SearchParamsProps) {
 
   const questions = result?.questions || [];
 
-  // TODO: fetch Recommended questions
-
   // console.log(result);
   // console.log(result.questions);
 
