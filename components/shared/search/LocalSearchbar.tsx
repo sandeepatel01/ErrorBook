@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 
 interface CustomInputProps {
   route: string;
@@ -55,36 +55,38 @@ const LocalSearchbar = ({
   }, [search, searchParams, router, pathname, query, route]);
 
   return (
-    <div
-      className={`background-light800_darkgradient flex min-h-[56px] grow items-center gap-4 rounded-[10px] px-4 ${otherClasses}`}
-    >
-      {iconPosition === "left" && (
-        <Image
-          src={imgSrc}
-          width={24}
-          height={24}
-          alt="search"
-          className="cursor-pointer"
+    <Suspense fallback={<div>Loading...</div>}>
+      <div
+        className={`background-light800_darkgradient flex min-h-[56px] grow items-center gap-4 rounded-[10px] px-4 ${otherClasses}`}
+      >
+        {iconPosition === "left" && (
+          <Image
+            src={imgSrc}
+            width={24}
+            height={24}
+            alt="search"
+            className="cursor-pointer"
+          />
+        )}
+        <Input
+          type="text"
+          placeholder={placeholder}
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          className="paragraph-regular no-focus text-dark400_light700 border-none bg-transparent shadow-none outline-none"
         />
-      )}
-      <Input
-        type="text"
-        placeholder={placeholder}
-        value={search}
-        onChange={(event) => setSearch(event.target.value)}
-        className="paragraph-regular no-focus text-dark400_light700 border-none bg-transparent shadow-none outline-none"
-      />
 
-      {iconPosition === "right" && (
-        <Image
-          src={imgSrc}
-          width={24}
-          height={24}
-          alt="search"
-          className="cursor-pointer"
-        />
-      )}
-    </div>
+        {iconPosition === "right" && (
+          <Image
+            src={imgSrc}
+            width={24}
+            height={24}
+            alt="search"
+            className="cursor-pointer"
+          />
+        )}
+      </div>
+    </Suspense>
   );
 };
 

@@ -31,15 +31,9 @@ export async function getUserById(params: MongoUserParams) {
       clerkId: userId,
     });
 
-    // .lean();
-
-    // <MongoUserParams>
-
     if (!user) {
       throw new Error("User not found");
     }
-
-    // as MongoUserParams
 
     return user;
   } catch (error) {
@@ -451,9 +445,3 @@ export async function getUserAnswers(params: GetUserStatsParams) {
     throw error;
   }
 }
-
-// : Promise<MongoUserParams | null>
-
-// {
-//   userId: string;
-// }

@@ -31,7 +31,6 @@ const page = async () => {
       <div className="mt-9">
         <Suspense fallback={<div>Loading...</div>}>
           <Question mongoUserId={JSON.stringify(mongoUser._id)} />
-          {/* <Question mongoUserId={mongoUser._id.toString()} /> */}
         </Suspense>
       </div>
     </div>
