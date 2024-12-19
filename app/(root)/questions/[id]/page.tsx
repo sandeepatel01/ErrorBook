@@ -25,6 +25,7 @@ const page = async ({ params, searchParams }: URLProps) => {
   const { userId: clerkId } = await auth();
 
   let mongoUser;
+
   if (clerkId) {
     mongoUser = await getUserById({ userId: clerkId });
   }

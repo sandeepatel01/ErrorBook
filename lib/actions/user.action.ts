@@ -9,7 +9,7 @@ import {
   GetSavedQuestionsParams,
   GetUserByIdParams,
   GetUserStatsParams,
-  MongoUserParams,
+  // MongoUserParams,
   ToggleSaveQuestionParams,
   UpdateUserParams,
 } from "./shared.types";
@@ -21,9 +21,7 @@ import Answer from "@/models/answer.model";
 import { BadgeCriteriaType } from "@/types";
 import { assignBadges } from "../utils";
 
-export async function getUserById(params: {
-  userId: string;
-}): Promise<MongoUserParams | null> {
+export async function getUserById(params: any) {
   await connectToDatabase();
 
   try {
@@ -31,13 +29,19 @@ export async function getUserById(params: {
 
     const user = await User.findOne({
       clerkId: userId,
-    }).lean<MongoUserParams>();
+    });
+
+    // .lean();
+
+    // <MongoUserParams>
 
     if (!user) {
       throw new Error("User not found");
     }
 
-    return user as MongoUserParams;
+    // as MongoUserParams
+
+    return user;
   } catch (error) {
     console.error("Error fetching user:", error);
     throw error;
@@ -447,3 +451,9 @@ export async function getUserAnswers(params: GetUserStatsParams) {
     throw error;
   }
 }
+
+// : Promise<MongoUserParams | null>
+
+// {
+//   userId: string;
+// }

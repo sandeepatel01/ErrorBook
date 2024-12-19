@@ -138,4 +138,5 @@ export interface MongoUserParams {
   clerkId: string;
   name?: string;
   email?: string;
+  saved: string[];
 }
