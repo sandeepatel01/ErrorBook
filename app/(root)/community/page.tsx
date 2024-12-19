@@ -1,11 +1,11 @@
-import UserCard from "@/components/cards/UserCard";
+// import UserCard from "@/components/cards/UserCard";
 // import Filter from "@/components/shared/Filter";
-import Pagination from "@/components/shared/Pagination";
+// import Pagination from "@/components/shared/Pagination";
 // import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 // import { UserFilters } from "@/constants/filters";
-import { getAllUsers } from "@/lib/actions/user.action";
+// import { getAllUsers } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
-import Link from "next/link";
+// import Link from "next/link";
 import React from "react";
 
 import type { Metadata } from "next";
@@ -15,14 +15,14 @@ export const metadata: Metadata = {
 };
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
-  const queryObj = await Promise.resolve(searchParams ?? {});
-  const searchQuery = queryObj.q || "";
+  // const queryObj = await Promise.resolve(searchParams ?? {});
+  // const searchQuery = queryObj.q || "";
 
-  const result = await getAllUsers({
-    searchQuery,
-    filter: queryObj.filter || "",
-    page: queryObj?.page ? +queryObj.page : 1,
-  });
+  // const result = await getAllUsers({
+  //   searchQuery,
+  //   filter: queryObj.filter || "",
+  //   page: queryObj?.page ? +queryObj.page : 1,
+  // });
 
   return (
     <>
@@ -44,7 +44,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
         /> */}
       </div>
 
-      <section className="mt-12 flex flex-wrap gap-4">
+      {/* <section className="mt-12 flex flex-wrap gap-4">
         {result.users.length > 0 ? (
           result.users.map((user) => <UserCard key={user._id} user={user} />)
         ) : (
@@ -55,14 +55,14 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
             </Link>
           </div>
         )}
-      </section>
+      </section> */}
 
-      <div className="mt-10">
+      {/* <div className="mt-10">
         <Pagination
           pageNumber={queryObj?.page ? +queryObj.page : 1}
           isNext={result.isNext}
         />
-      </div>
+      </div> */}
     </>
   );
 };
