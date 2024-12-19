@@ -1,19 +1,19 @@
 // import Profile from "@/components/forms/Profile";
 // import { getUserById } from "@/lib/actions/user.action";
 import { ParamsProps } from "@/types";
-import { auth } from "@clerk/nextjs/server";
+// import { auth } from "@clerk/nextjs/server";
 import React from "react";
 
 const Page = async ({ params }: ParamsProps) => {
-  const authResult = await auth();
+  // const authResult = await auth();
 
   // Extract the userId (or 'sub') from the auth object
-  const userId = authResult?.userId;
+  // const userId = authResult?.userId;
 
-  if (!userId) {
-    console.error("User not authenticated");
-    return null;
-  }
+  // if (!userId) {
+  //   console.error("User not authenticated");
+  //   return null;
+  // }
 
   // const mongoUser = await getUserById({ userId });
 
