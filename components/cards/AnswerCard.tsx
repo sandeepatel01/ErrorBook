@@ -1,3 +1,5 @@
+"use client";
+
 import { formatNumber, getTimestamp } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";

@@ -35,8 +35,8 @@ const HomeFilters = () => {
   };
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="mt-10 hidden flex-wrap gap-3 md:flex">
+    <div className="mt-10 hidden flex-wrap gap-3 md:flex">
+      <Suspense fallback={<div>Loading...</div>}>
         {HomePageFilters.map((item) => (
           <Button
             key={item.value}
@@ -46,8 +46,8 @@ const HomeFilters = () => {
             {item.name}
           </Button>
         ))}
-      </div>
-    </Suspense>
+      </Suspense>
+    </div>
   );
 };
 
