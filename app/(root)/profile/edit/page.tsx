@@ -1,10 +1,12 @@
 // import Profile from "@/components/forms/Profile";
 // import { getUserById } from "@/lib/actions/user.action";
-import { ParamsProps } from "@/types";
+// import { ParamsProps } from "@/types";
 // import { auth } from "@clerk/nextjs/server";
-import React from "react";
+// import React from "react";
 
-const Page = async ({ params }: ParamsProps) => {
+const Page = async () => {
+  // { params }: ParamsProps
+
   // const authResult = await auth();
 
   // Extract the userId (or 'sub') from the auth object
