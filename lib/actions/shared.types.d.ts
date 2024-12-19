@@ -134,9 +134,10 @@ export interface DeleteUserParams {
 }
 
 export interface MongoUserParams {
-  _id: string;
-  clerkId: string;
+  userId: string;
+  _id?: string;
+  clerkId?: string;
   name?: string;
   email?: string;
-  saved: string[];
+  saved?: string[];
 }

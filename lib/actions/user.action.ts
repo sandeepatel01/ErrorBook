@@ -9,7 +9,7 @@ import {
   GetSavedQuestionsParams,
   GetUserByIdParams,
   GetUserStatsParams,
-  // MongoUserParams,
+  MongoUserParams,
   ToggleSaveQuestionParams,
   UpdateUserParams,
 } from "./shared.types";
@@ -21,7 +21,7 @@ import Answer from "@/models/answer.model";
 import { BadgeCriteriaType } from "@/types";
 import { assignBadges } from "../utils";
 
-export async function getUserById(params: any) {
+export async function getUserById(params: MongoUserParams) {
   await connectToDatabase();
 
   try {
