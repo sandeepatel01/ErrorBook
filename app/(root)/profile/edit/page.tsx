@@ -1,7 +1,7 @@
 import Profile from "@/components/forms/Profile";
 import { getUserById } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
-import React from "react";
+import React, { Suspense } from "react";
 
 const Page = async () => {
   const authResult = await auth();
@@ -18,10 +18,12 @@ const Page = async () => {
 
   return (
     <>
-      <h1 className="h1-bold text-dark100_light900">Edit Question</h1>
-      <div className="mt-9">
-        <Profile clerkId={userId} user={JSON.stringify(mongoUser)} />
-      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <h1 className="h1-bold text-dark100_light900">Edit Question</h1>
+        <div className="mt-9">
+          <Profile clerkId={userId} user={JSON.stringify(mongoUser)} />
+        </div>
+      </Suspense>
     </>
   );
 };

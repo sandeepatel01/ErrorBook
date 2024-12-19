@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 
 interface MetrixProps {
   imgUrl: string;
@@ -24,7 +24,7 @@ const Metrix = ({
   isAuthor,
 }: MetrixProps) => {
   const metrixContent = (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <Image
         src={imgUrl}
         width={16}
@@ -40,14 +40,16 @@ const Metrix = ({
           {title}
         </span>
       </p>
-    </>
+    </Suspense>
   );
 
   if (href) {
     return (
-      <Link href={href} className="flex-center gap-1">
-        {metrixContent}
-      </Link>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Link href={href} className="flex-center gap-1">
+          {metrixContent}
+        </Link>
+      </Suspense>
     );
   }
 

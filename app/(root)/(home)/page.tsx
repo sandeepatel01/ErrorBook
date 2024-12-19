@@ -15,6 +15,7 @@ import Pagination from "@/components/shared/Pagination";
 
 import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Home | ErrorBook",
@@ -60,7 +61,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
   // console.log(result.questions);
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">All Questions</h1>
         <Link href="/ask-question" className="justify-endmax-sm:w-full flex">
@@ -119,6 +120,6 @@ export default async function Home({ searchParams }: SearchParamsProps) {
           isNext={result.isNext}
         />
       </div>
-    </>
+    </Suspense>
   );
 }

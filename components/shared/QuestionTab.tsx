@@ -1,5 +1,5 @@
 import { getUserQuestions } from "@/lib/actions/user.action";
-import React from "react";
+import React, { Suspense } from "react";
 import QuestionCard from "../cards/QuestionCard";
 import Pagination from "./Pagination";
 
@@ -21,7 +21,7 @@ const QuestionTab = async ({
     page: queryObj?.page ? +queryObj.page : 1,
   });
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       {result.questions.map((item: any) => (
         <QuestionCard
           key={item._id}
@@ -43,7 +43,7 @@ const QuestionTab = async ({
           isNext={result.isNextQuestions}
         />
       </div>
-    </>
+    </Suspense>
   );
 };
 

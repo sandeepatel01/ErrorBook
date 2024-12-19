@@ -4,7 +4,7 @@ import { deleteAnswer } from "@/lib/actions/answer.action";
 import { deleteQuestion } from "@/lib/actions/question.action";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 
 interface EditDeleteActionProps {
   type: string;
@@ -29,27 +29,29 @@ const EditDeleteAction = ({ type, itemId }: EditDeleteActionProps) => {
   };
 
   return (
-    <div className="flex items-center justify-end gap-3 max-sm:w-full">
-      {type === "Question" && (
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="flex items-center justify-end gap-3 max-sm:w-full">
+        {type === "Question" && (
+          <Image
+            src="/assets/icons/edit.svg"
+            width={14}
+            height={14}
+            alt="edit"
+            className="cursor-pointer object-contain"
+            onClick={handleEdit}
+          />
+        )}
+
         <Image
-          src="/assets/icons/edit.svg"
+          src="/assets/icons/trash.svg"
           width={14}
           height={14}
-          alt="edit"
+          alt="delete"
           className="cursor-pointer object-contain"
-          onClick={handleEdit}
+          onClick={handleDelete}
         />
-      )}
-
-      <Image
-        src="/assets/icons/trash.svg"
-        width={14}
-        height={14}
-        alt="delete"
-        className="cursor-pointer object-contain"
-        onClick={handleDelete}
-      />
-    </div>
+      </div>
+    </Suspense>
   );
 };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import Prism from "prismjs";
 import parse from "html-react-parser";
 
@@ -36,7 +36,11 @@ const ParseHTML = ({ data }: Props) => {
     Prism.highlightAll();
   }, []);
 
-  return <div className={`markdown w-full min-w-full`}>{parse(data)}</div>;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className={`markdown w-full min-w-full`}>{parse(data)}</div>
+    </Suspense>
+  );
 };
 
 export default ParseHTML;

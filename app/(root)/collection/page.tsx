@@ -9,6 +9,7 @@ import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Collection | ErrorBook",
@@ -33,7 +34,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
   // console.log("Questions Array:", result.questions);
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <h1 className="h1-bold text-dark100_light900">Saved Questions</h1>
 
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
@@ -82,6 +83,6 @@ export default async function Home({ searchParams }: SearchParamsProps) {
           isNext={result.isNext}
         />
       </div>
-    </>
+    </Suspense>
   );
 }

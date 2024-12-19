@@ -6,7 +6,7 @@ import { auth } from "@clerk/nextjs/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 import { getJoinedDate } from "@/lib/utils";
 import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
@@ -36,7 +36,7 @@ const page = async ({ params, searchParams }: URLProps) => {
   // if (isLoading) return <Loading />;
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="flex flex-col-reverse items-start justify-between sm:flex-row">
         <div className="flex flex-col items-start gap-4 lg:flex-row">
           <Image
@@ -133,7 +133,7 @@ const page = async ({ params, searchParams }: URLProps) => {
           </TabsContent>
         </Tabs>
       </div>
-    </>
+    </Suspense>
   );
 };
 

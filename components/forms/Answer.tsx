@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -100,7 +100,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
   // };
 
   return (
-    <div>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
         <h4 className="paragraph-semibold text-dark400_light800">
           Write Your Answer Here
@@ -195,7 +195,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
           </div>
         </form>
       </Form>
-    </div>
+    </Suspense>
   );
 };
 

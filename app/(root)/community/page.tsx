@@ -6,7 +6,7 @@ import { UserFilters } from "@/constants/filters";
 import { getAllUsers } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 
 import type { Metadata } from "next";
 
@@ -25,7 +25,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
   });
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">All Users</h1>
       </div>
@@ -63,7 +63,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
           isNext={result.isNext}
         />
       </div>
-    </>
+    </Suspense>
   );
 };
 
