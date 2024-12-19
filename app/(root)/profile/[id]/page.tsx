@@ -1,6 +1,6 @@
 // import { Button } from "@/components/ui/button";
 // import { getUserInfo } from "@/lib/actions/user.action";
-import { URLProps } from "@/types";
+// import { URLProps } from "@/types";
 // import { SignedIn } from "@clerk/nextjs";
 // import { auth } from "@clerk/nextjs/server";
 // import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,7 +14,9 @@ import { URLProps } from "@/types";
 // import AnswerTab from "@/components/shared/AnswerTab";
 // import Loading from "./loading";
 
-const page = async ({ params, searchParams }: URLProps) => {
+const page = async () => {
+  // { params, searchParams }: URLProps
+
   // if (!params) {
   //   return <div>Error: No user found</div>;
   // }
