@@ -6,7 +6,7 @@ import { URLProps } from "@/types";
 // import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // import Image from "next/image";
 // import Link from "next/link";
-import React from "react";
+// import React from "react";
 // import { getJoinedDate } from "@/lib/utils";
 // import ProfileLink from "@/components/shared/ProfileLink";
 // import Stats from "@/components/shared/Stats";
@@ -15,9 +15,9 @@ import React from "react";
 // import Loading from "./loading";
 
 const page = async ({ params, searchParams }: URLProps) => {
-  if (!params) {
-    return <div>Error: No user found</div>;
-  }
+  // if (!params) {
+  //   return <div>Error: No user found</div>;
+  // }
 
   // const resolvedParams = await params;
   // const { id } = resolvedParams;
