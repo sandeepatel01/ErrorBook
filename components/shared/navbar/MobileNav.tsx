@@ -30,7 +30,7 @@ const NavContent = () => {
                 href={item.route}
                 className={`${
                   isActive
-                    ? "primary-gradient rounded-xl text-light-900"
+                    ? "primary-gradient rounded-[8px] text-light-900"
                     : "text-dark300_light900"
                 } flex items-center justify-start gap-4 bg-transparent p-4`}
               >
@@ -68,17 +68,17 @@ const MobileNav = () => {
         </SheetTrigger>
         <SheetContent
           side="left"
-          className="border-none bg-light-900 dark:bg-dark-200"
+          className="border-none bg-light-900 dark:bg-dark-100"
         >
           <Link href="/" className="flex items-center gap-1">
-            {/* <Image
-            src={"/assets/images/logo-dark.png"}
-            width={23}
-            height={23}
-            alt="ErrorBook"
-          /> */}
-            <p className="h2-bold text-dark100_light900">
-              <span className="font-extrabold text-[#ff0033]">ErrorBook</span>
+            <Image
+              src={"/assets/images/logo.svg"}
+              width={45}
+              height={45}
+              alt="ErrorBook"
+            />
+            <p className="h2-bold flex items-center justify-center text-dark-200 dark:text-light-900">
+              <span className="text-3xl font-extrabold">ErrorBook</span>
             </p>
           </Link>
           <div>
