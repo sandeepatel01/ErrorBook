@@ -42,7 +42,7 @@ const LeftSidebar = () => {
                 href={dynamicRoute}
                 className={`${
                   isActive
-                    ? "primary-gradient rounded-xl text-light-900"
+                    ? "primary-gradient rounded-[8px] bg-red-600 text-light-900"
                     : "text-dark300_light900"
                 } flex items-center justify-start gap-4 bg-transparent p-4`}
               >
@@ -66,7 +66,7 @@ const LeftSidebar = () => {
         <SignedOut>
           <div className="flex flex-col gap-3">
             <Link href="/sign-in">
-              <Button className="small-medium btn-secondary min-h-[41px] w-full rounded-xl px-4 py-3 shadow-none">
+              <Button className="small-medium btn-secondary min-h-[41px] w-full rounded-[8px] px-4 py-3 shadow-none">
                 <Image
                   src="/assets/icons/account.svg"
                   width={20}

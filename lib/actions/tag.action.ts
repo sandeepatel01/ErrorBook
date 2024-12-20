@@ -10,6 +10,7 @@ import {
 import Tag, { ITag } from "@/models/tag.model";
 import Question from "@/models/question.model";
 import { FilterQuery } from "mongoose";
+import console from "console";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   await connectToDatabase();
@@ -17,16 +18,21 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
     const { userId } = params;
 
+    // console.log("User ID: ", userId);
+
     const user = await User.findById(userId);
     if (!user) throw new Error("User not found");
 
-    // TODO: Find interactions for the user and group by tags...
-    // TODO: Interaction...
+    // console.log("User found: ", user);
 
-    return [
-      { _id: "1", name: "Tag 1" },
-      { _id: "2", name: "Tag 2" },
-    ];
+    const tags = await Tag.find({ userId: user._id });
+
+    const tagDetails = tags.slice(0, 3).map((tag) => ({
+      _id: tag._id.toString(),
+      name: tag.name,
+    }));
+
+    return tagDetails;
   } catch (error) {
     console.log("Error in getting top interacted tags: ", error);
     throw error;

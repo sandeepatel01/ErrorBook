@@ -1,7 +1,7 @@
 "use client";
 
 import { SignedIn, UserButton } from "@clerk/nextjs";
-// import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import Theme from "./Theme";
@@ -13,14 +13,16 @@ const Navbar = () => {
     <Suspense fallback={<div>Loading...</div>}>
       <nav className="flex-between background-light900_dark200 fixed z-50 w-full gap-5 p-6 shadow-light-300 dark:shadow-none sm:px-12">
         <Link href="/" className="flex items-center gap-1">
-          {/* <Image
-          src={"/assets/images/logo-dark.png"}
-          width={23}
-          height={23}
-          alt="ErrorBook"
-        /> */}
-          <p className="h2-bold text-dark-100 dark:text-light-900 max-sm:hidden">
-            <span className="font-extrabold text-[#ff0033]">ErrorBook</span>
+          <Image
+            src={"/assets/images/logo.svg"}
+            width={45}
+            height={45}
+            alt="ErrorBook"
+          />
+          <p className="h2-bold flex items-center justify-center text-dark-200 dark:text-light-900 max-sm:hidden">
+            <span className="text-xl font-extrabold sm:text-2xl md:text-3xl">
+              ErrorBook
+            </span>
           </p>
         </Link>
         <GlobalSearch />

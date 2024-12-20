@@ -26,7 +26,7 @@ const Theme = () => {
   }
 
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <Menubar className="relative border-none bg-transparent shadow-none">
         <MenubarMenu>
           <MenubarTrigger className="focus:bg-light-900 data-[state=open]:bg-light-900 dark:focus:bg-dark-200 dark:data-[state=open]:bg-dark-200">
@@ -39,6 +39,7 @@ const Theme = () => {
                 className="active-theme"
               />
             ) : (
+              // <h1>🌞</h1>
               <Image
                 src="/assets/icons/moon.svg"
                 width={20}
