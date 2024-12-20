@@ -334,6 +334,8 @@ export async function getUserInfo(params: GetUserByIdParams) {
       },
     ]);
 
+    const totalViews = questionViews?.totalViews || 0;
+
     const criteria = [
       { type: "QUESTION_COUNT" as BadgeCriteriaType, count: totalQuestions },
       { type: "ANSWER_COUNT" as BadgeCriteriaType, count: totalAnswers },
@@ -347,7 +349,7 @@ export async function getUserInfo(params: GetUserByIdParams) {
       },
       {
         type: "TOTAL_VIEWS" as BadgeCriteriaType,
-        count: questionViews.totalViews || 0,
+        count: totalViews,
       },
     ];
 
