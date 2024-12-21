@@ -70,7 +70,7 @@ const MobileNav = () => {
           side="left"
           className="border-none bg-light-900 dark:bg-dark-100"
         >
-          <Link href="/" className="flex items-center gap-1">
+          {/* <Link href="/" className="flex items-center gap-1">
             <Image
               src={"/assets/images/logo.svg"}
               width={45}
@@ -80,7 +80,33 @@ const MobileNav = () => {
             <p className="h2-bold flex items-center justify-center text-dark-200 dark:text-light-900">
               <span className="text-3xl font-extrabold">ErrorBook</span>
             </p>
+          </Link> */}
+
+          <Link
+            href="/"
+            className="ml-[-180px] mt-1 flex flex-col items-center gap-1"
+          >
+            <div className="flex items-center gap-2">
+              <Image
+                src={"/assets/images/logo.svg"}
+                width={45}
+                height={45}
+                alt="ErrorBook"
+              />
+              <p className="h2-bold flex items-center justify-center text-dark-200 dark:text-light-900">
+                <span className="text-xl font-extrabold sm:text-2xl md:text-3xl">
+                  ErrorBook
+                </span>
+              </p>
+            </div>
+            <div className="">
+              <p className="ml-40 mt-[-14px] text-sm text-gray-500 dark:text-gray-400">
+                Powered by
+                <span className="font-bold text-[#137abc]"> SharpCareer</span>
+              </p>
+            </div>
           </Link>
+
           <div>
             <SheetClose asChild>
               <NavContent />
