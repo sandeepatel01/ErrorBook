@@ -45,7 +45,7 @@ const Navbar = () => {
             </p>
           </div>
           <p className="ml-24 mt-[-8] text-sm text-gray-500 dark:text-gray-400">
-            Powered by{" "}
+            Powered by
             <span className="font-bold text-[#137abc]">SharpCareer</span>
           </p>
         </Link>
