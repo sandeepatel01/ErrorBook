@@ -38,16 +38,18 @@ const Navbar = () => {
               height={45}
               alt="ErrorBook"
             />
-            <p className="h2-bold text-dark-200 dark:text-light-900">
+            <p className="h2-bold flex items-center justify-center text-dark-200 dark:text-light-900 max-sm:hidden">
               <span className="text-xl font-extrabold sm:text-2xl md:text-3xl">
                 ErrorBook
               </span>
             </p>
           </div>
-          <p className="ml-24 mt-[-8] text-sm text-gray-500 dark:text-gray-400">
-            Powered by{" "}
-            <span className="font-bold text-[#137abc]">SharpCareer</span>
-          </p>
+          <div className="max-sm:hidden">
+            <p className="ml-24 mt-[-14px] text-sm text-gray-500 dark:text-gray-400">
+              Powered by
+              <span className="font-bold text-[#137abc]"> SharpCareer</span>
+            </p>
+          </div>
         </Link>
 
         <GlobalSearch />
