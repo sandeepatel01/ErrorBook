@@ -4,21 +4,31 @@ import React from "react";
 const Loading = () => {
   return (
     <section className="p-4 md:p-6">
-      <div className="flex flex-col items-center gap-4 md:flex-row md:items-start md:gap-8">
+      {/* <div className="flex flex-col items-center gap-4 md:flex-row md:items-start md:gap-8">
         <Skeleton className="size-24 rounded-[12px]" />
         <div className="hidden w-full flex-col gap-2 md:flex md:w-3/4">
           <Skeleton className="h-6 w-1/3 rounded-[8px]" />
           <Skeleton className="h-4 w-1/4 rounded-[6px]" />
         </div>
         <Skeleton className="mb-4 h-10 w-28 rounded-[8px] md:mb-0" />{" "}
+      </div> */}
+
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6 md:gap-8">
+        {/* Avatar - Left Aligned */}
+        <Skeleton className="size-24 rounded-full sm:size-28 md:size-24 lg:size-24" />
+
+        {/* Info Section */}
+        <div className="flex w-full flex-col gap-2 sm:ml-4 sm:gap-3 md:w-3/4">
+          <Skeleton className="h-6 w-2/3 rounded-[8px] sm:h-8 sm:w-3/4 md:h-9 md:w-1/2 lg:w-1/3" />
+          <Skeleton className="h-4 w-1/4 rounded-[8px] sm:h-5 sm:w-1/3 md:h-6 md:w-1/4" />
+        </div>
       </div>
 
-      <div className="my-8 hidden flex-wrap justify-around gap-4 md:flex">
-        <Skeleton className="h-20 w-24 rounded-[10px] md:h-16 md:w-20 lg:h-24 lg:w-32" />
-        <Skeleton className="h-20 w-24 rounded-[10px] md:h-16 md:w-20 lg:h-24 lg:w-32" />
-        <Skeleton className="h-20 w-24 rounded-[10px] md:h-16 md:w-20 lg:h-24 lg:w-32" />
-        <Skeleton className="h-20 w-24 rounded-[10px] md:h-16 md:w-20 lg:h-24 lg:w-32" />
-        <Skeleton className="h-20 w-24 rounded-[10px] md:h-16 md:w-20 lg:h-24 lg:w-32" />
+      <div className="my-8 flex flex-wrap justify-center gap-6">
+        <Skeleton className="h-24 w-28 rounded-[8px] md:h-28 md:w-32 lg:h-32 lg:w-36 xl:w-40" />
+        <Skeleton className="h-24 w-28 rounded-[8px] md:h-28 md:w-32 lg:h-32 lg:w-36 xl:w-40" />
+        <Skeleton className="h-24 w-28 rounded-[8px] md:h-28 md:w-32 lg:h-32 lg:w-36" />
+        <Skeleton className="h-24 w-28 rounded-[8px] md:h-28 md:w-32 lg:h-32 lg:w-40" />
       </div>
 
       <div className="mt-4 flex gap-4">
