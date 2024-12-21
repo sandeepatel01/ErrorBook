@@ -12,7 +12,7 @@ import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
 import QuestionTab from "@/components/shared/QuestionTab";
 import AnswerTab from "@/components/shared/AnswerTab";
-// import Loading from "./loading";
+import Loading from "./loading";
 
 const page = async ({ params, searchParams }: URLProps) => {
   if (!params) {
@@ -32,8 +32,8 @@ const page = async ({ params, searchParams }: URLProps) => {
 
   const plainUserInfo = userInfo;
 
-  // const isLoading = true;
-  // if (isLoading) return <Loading />;
+  const isLoading = true;
+  if (isLoading) return <Loading />;
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
