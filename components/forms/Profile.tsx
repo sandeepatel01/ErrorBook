@@ -43,11 +43,12 @@ const Profile = ({ clerkId, user }: ProfileProps) => {
   });
 
   async function onSubmit(values: z.infer<typeof ProfileSchema>) {
+    console.log("Form submitted with values: ", values);
     setIsSubmitting(true);
 
     try {
       // Update user details in the database
-      await updateUser({
+      const response = await updateUser({
         clerkId,
         updateData: {
           name: values.name,
@@ -58,10 +59,11 @@ const Profile = ({ clerkId, user }: ProfileProps) => {
         },
         path: pathname,
       });
+      console.log("Update Response: ", response);
 
       router.back();
     } catch (error) {
-      console.log("Error creating question: ", error);
+      console.log("Error updating user: ", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -165,7 +167,7 @@ const Profile = ({ clerkId, user }: ProfileProps) => {
             render={({ field }) => (
               <FormItem className="space-y-3.5">
                 <FormLabel className="paragraph-semibold text-dark400_light800">
-                  Bio<span className="text-red-500">*</span>{" "}
+                  Bio<span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <Textarea

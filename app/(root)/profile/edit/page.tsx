@@ -19,7 +19,6 @@ const Page = async () => {
   return (
     <>
       <Suspense fallback={<div>Loading...</div>}>
-        <h1 className="h1-bold text-dark100_light900">Edit Question</h1>
         <div className="mt-9">
           <Profile clerkId={userId} user={JSON.stringify(mongoUser)} />
         </div>
