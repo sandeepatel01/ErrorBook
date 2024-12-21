@@ -422,6 +422,7 @@ export async function getRecomendedQuestions(params: RecommendedParams) {
     const formattedQuestions = recommendedQuestions.map((question) => ({
       ...question,
       _id: question._id.toString(),
+      title: question.title,
       tags: question.tags.map((tag) => ({
         _id: tag._id.toString(),
         name: tag.name,
@@ -431,6 +432,9 @@ export async function getRecomendedQuestions(params: RecommendedParams) {
         name: question.author.name,
         picture: question.author.picture,
       },
+      views: question.views,
+      upvotes: question.upvotes.length,
+      answers: question.answers,
       createdAt: question.createdAt.toISOString(),
     }));
 

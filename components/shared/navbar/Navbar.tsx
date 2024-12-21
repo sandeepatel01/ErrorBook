@@ -12,7 +12,7 @@ const Navbar = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <nav className="flex-between background-light900_dark200 fixed z-50 w-full gap-5 p-6 shadow-light-300 dark:shadow-none sm:px-12">
-        <Link href="/" className="flex items-center gap-1">
+        {/* <Link href="/" className="flex items-center gap-1">
           <Image
             src={"/assets/images/logo.svg"}
             width={45}
@@ -24,7 +24,32 @@ const Navbar = () => {
               ErrorBook
             </span>
           </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Powered by{" "}
+            <span className="font-medium text-blue-600">SharpCareer</span>
+          </p>
+        </Link> */}
+
+        <Link href="/" className="mt-1 flex flex-col items-center gap-1">
+          <div className="flex items-center gap-2">
+            <Image
+              src={"/assets/images/logo.svg"}
+              width={45}
+              height={45}
+              alt="ErrorBook"
+            />
+            <p className="h2-bold text-dark-200 dark:text-light-900">
+              <span className="text-xl font-extrabold sm:text-2xl md:text-3xl">
+                ErrorBook
+              </span>
+            </p>
+          </div>
+          <p className="ml-24 mt-[-8] text-sm text-gray-500 dark:text-gray-400">
+            Powered by{" "}
+            <span className="font-bold text-[#137abc]">SharpCareer</span>
+          </p>
         </Link>
+
         <GlobalSearch />
         <div className="flex-between gap-5">
           <Theme />
