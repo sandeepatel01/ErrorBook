@@ -100,7 +100,7 @@ const MobileNav = () => {
               </p>
             </div>
             <div className="">
-              <p className="ml-40 mt-[-14px] text-sm text-gray-500 dark:text-gray-400">
+              <p className="ml-44 mt-[-14px] text-sm text-gray-500 dark:text-gray-400">
                 Powered by
                 <span className="font-bold text-[#137abc]"> SharpCareer</span>
               </p>

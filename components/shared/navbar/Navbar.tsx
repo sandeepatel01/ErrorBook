@@ -30,7 +30,10 @@ const Navbar = () => {
           </p>
         </Link> */}
 
-        <Link href="/" className="mt-1 flex flex-col items-center gap-1">
+        <Link
+          href="/"
+          className="mt-1 flex flex-col items-center gap-1 max-sm:hidden"
+        >
           <div className="flex items-center gap-2">
             <Image
               src={"/assets/images/logo.svg"}
@@ -48,6 +51,24 @@ const Navbar = () => {
             <p className="ml-24 mt-[-14px] text-sm text-gray-500 dark:text-gray-400">
               Powered by
               <span className="font-bold text-[#137abc]"> SharpCareer</span>
+            </p>
+          </div>
+        </Link>
+        <Link
+          href="/"
+          className="mt-1 flex flex-col items-center gap-1 md:hidden lg:hidden"
+        >
+          <div className="flex items-center gap-2">
+            <Image
+              src={"/assets/images/logo1.png"}
+              width={45}
+              height={45}
+              alt="ErrorBook"
+            />
+            <p className="h2-bold flex items-center justify-center text-dark-200 dark:text-light-900">
+              <span className="text-xl font-extrabold sm:text-2xl md:text-3xl">
+                SharpCareer
+              </span>
             </p>
           </div>
         </Link>
