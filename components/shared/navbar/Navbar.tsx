@@ -65,7 +65,7 @@ const Navbar = () => {
               height={45}
               alt="ErrorBook"
             />
-            <p className="h2-bold flex items-center justify-center text-dark-200 dark:text-light-900">
+            <p className="h2-bold flex items-center justify-center text-dark-200 dark:text-light-900 max-sm:hidden">
               <span className="text-xl font-extrabold sm:text-2xl md:text-3xl">
                 SharpCareer
               </span>
