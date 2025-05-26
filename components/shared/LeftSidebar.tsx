@@ -10,11 +10,9 @@ import { Button } from "../ui/button";
 
 const LeftSidebar = () => {
   const { isLoaded, userId } = useAuth();
-  // console.log("User Id: ", userId);
   const pathname = usePathname();
 
   if (!isLoaded) {
-    // Prevent rendering until the auth state is fully loaded
     return <div>Loading...</div>;
   }
 

@@ -33,17 +33,6 @@ const QuestionCard = ({
 }: QuestionCardProps) => {
   const showActionButtons = clerkId && clerkId === author.clerkId;
 
-  // console.log("QuestionCard", {
-  //   _id,
-  //   title,
-  //   tags,
-  //   author,
-  //   views,
-  //   upvotes,
-  //   answers,
-  //   createdAt,
-  // });
-
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="card-wrapper rounded-[10px] p-9 sm:px-11">

@@ -37,12 +37,6 @@ const Question = ({ mongoUserId, questionDetails, type }: QuestionProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  // const log = () => {
-  //   if (editorRef.current) {
-  //     console.log(editorRef.current.getContent());
-  //   }
-  // };
-
   const parsedQuestionDetails = (() => {
     try {
       return questionDetails ? JSON.parse(questionDetails) : null;
