@@ -64,9 +64,6 @@ export async function POST(req: Request) {
       username,
     } = evt.data;
 
-    // Convert email_addresses, first_name, last_name, and image_url to camelCase
-    // Now using emailAddresses, firstName, lastName, imageUrl
-
     // Create a new user in the database
     const mongoUser = await createUser({
       clerkId: id,

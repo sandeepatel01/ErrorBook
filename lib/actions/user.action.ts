@@ -245,8 +245,6 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
       throw new Error("User data is an array, expected a single user object");
     }
 
-    // const savedQuestions = user.saved;
-    // Map saved questions to convert _id (Buffer) to string
     const savedQuestions = user.saved.map((question: any) => ({
       ...question,
       _id: question._id.toString(), // Convert `_id` to string

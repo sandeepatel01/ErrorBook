@@ -54,21 +54,6 @@ body {
     background: linear-gradient(129deg, #dc2626 0%, #e2995f 100%);
   }
 
-  /* .primary-gradient {
-    --tw-bg-opacity: 1;
-    background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
-  } */
-
-  /* .primary-gradient {
-    --tw-bg-opacity: 1;
-    background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
-    transition: background-color 0.3s ease; 
-  } */
-
-  /* .primary-gradient:hover {
-    background-color: rgb(220 38 38 / 0.8);
-  } */
-
   .dark-gradient {
     background: linear-gradient(
       232deg,
@@ -97,7 +82,6 @@ body {
     );
   }
   .primary-text-gradient {
-    /* background: linear-gradient(129deg, #ff7000 0%, #e2995f 100%); */
     --tw-bg-opacity: 1;
     background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
     background-clip: text;

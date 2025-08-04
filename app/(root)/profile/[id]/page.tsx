@@ -12,7 +12,6 @@ import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
 import QuestionTab from "@/components/shared/QuestionTab";
 import AnswerTab from "@/components/shared/AnswerTab";
-// import Loading from "./loading";
 
 const page = async ({ params, searchParams }: URLProps) => {
   if (!params) {
@@ -27,13 +26,8 @@ const page = async ({ params, searchParams }: URLProps) => {
   const { userId: clerkId } = await auth();
 
   const userInfo = await getUserInfo({ userId: id });
-  // // Convert userInfo to a plain object
-  // const plainUserInfo = JSON.parse(JSON.stringify(userInfo));
 
   const plainUserInfo = userInfo;
-
-  // const isLoading = true;
-  // if (isLoading) return <Loading />;
 
   return (
     <Suspense fallback={<div>Loading...</div>}>

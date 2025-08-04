@@ -19,8 +19,6 @@ const page = async ({ params, searchParams }: URLProps) => {
 
   const queryObj = await Promise.resolve(searchParams ?? {});
 
-  // console.log("Resolved Params:", resolvedParams);
-
   const result = await getQuestionById({ questionId });
   const { userId: clerkId } = await auth();
 

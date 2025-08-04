@@ -4,15 +4,6 @@ import React from "react";
 const Loading = () => {
   return (
     <section className="p-4 md:p-6">
-      {/* <div className="flex flex-col items-center gap-4 md:flex-row md:items-start md:gap-8">
-        <Skeleton className="size-24 rounded-[12px]" />
-        <div className="hidden w-full flex-col gap-2 md:flex md:w-3/4">
-          <Skeleton className="h-6 w-1/3 rounded-[8px]" />
-          <Skeleton className="h-4 w-1/4 rounded-[6px]" />
-        </div>
-        <Skeleton className="mb-4 h-10 w-28 rounded-[8px] md:mb-0" />{" "}
-      </div> */}
-
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6 md:gap-8">
         {/* Avatar - Left Aligned */}
         <Skeleton className="size-24 rounded-full sm:size-28 md:size-24 lg:size-24" />

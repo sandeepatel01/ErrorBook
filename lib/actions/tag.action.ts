@@ -136,37 +136,6 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
 
     const questions = tag.questions;
 
-    // Convert the questions to plain objects using .map() and handle nested fields
-    // const questions = tag.questions.map((question: any) => {
-    //   // Convert the question and subfields to plain objects
-    //   const plainQuestion = question.toObject ? question.toObject() : question;
-
-    //   // Convert ObjectId to string if needed
-    //   plainQuestion._id = plainQuestion._id.toString();
-
-    //   if (plainQuestion.author && plainQuestion.author._id) {
-    //     plainQuestion.author._id = plainQuestion.author._id.toString();
-    //   }
-
-    //   if (Array.isArray(plainQuestion.tags)) {
-    //     plainQuestion.tags = plainQuestion.tags.map((tag: any) => ({
-    //       _id: tag._id.toString(),
-    //       name: tag.name,
-    //     }));
-    //   }
-
-    //   if (plainQuestion.createdAt instanceof Date) {
-    //     plainQuestion.createdAt = plainQuestion.createdAt.toISOString();
-    //   }
-
-    //   // Manually convert Buffer fields to strings (if any)
-    //   if (Buffer.isBuffer(plainQuestion.someField)) {
-    //     plainQuestion.someField = plainQuestion.someField.toString("utf-8");
-    //   }
-
-    //   return plainQuestion;
-    // });
-
     const isNext = tag.questions.length > pageSize;
 
     return { tagTitle: tag.name, questions, isNext };
